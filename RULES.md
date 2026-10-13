@@ -58,17 +58,21 @@ A listing that fails enough of these gets marked SKIP, not silently dropped, alw
   with a safety caveat attached.
 - Say plainly when a repo needs a paid API key, account, or service to actually work.
 
-## Status dashboard (finder, validator, tailor, fact-checker, scout)
-`runs/status.json` is what `dashboard.html` reads to show a live view of the pipeline.
-Keep it true, not optimistic:
-- If the file doesn't exist yet, create it with every one of these keys set to
-  `{"state": "idle", "current": "", "total": 0}`: `finder`, `validator`, `tailor`,
-  `fact-checker`, `scout`.
-- Before you start working, set your own key's `state` to `"working"`.
-- Before each individual item (a listing, a packet, a candidate repo), set your `current`
-  to one short plain sentence describing exactly what you're doing right now.
-- The moment you finish one item, increment your `total` by 1.
-- When your run ends, set your `state` to `"done"`.
-- Read the whole file, change only your own key, write the whole file back as valid JSON.
-  Never touch another agent's key, and never write a `current` or `total` that isn't true
-  at that moment, this is a status board, not a progress bar for show.
+## Status dashboard (intake, finder, validator, tailor, fact-checker, scout)
+`dashboard.html` shows a live view of the pipeline by reading one small file per agent in
+`runs/status/`. Each agent owns exactly one file, `runs/status/<your-agent-name>.json`, and
+never touches anyone else's, so agents running in parallel can't overwrite each other.
+
+The file is always this shape, written in full each time (overwrite, don't append):
+
+```json
+{"state": "working", "current": "Checking Acme Corp, Supply Chain Analyst", "total": 3}
+```
+
+- `state` is `"working"` while you're running and `"done"` when your run ends.
+- `current` is one short plain sentence about exactly what you're doing right now.
+- `total` is how many items you've fully finished (listings, packets, repos).
+- Write it when you start, before each new item, and when you finish. Don't add a
+  timestamp, the dashboard reads the file's real save time on its own. Keep it true: never
+  write a `current` or `total` that isn't accurate at that moment. It's a status board, not
+  a progress bar for show.

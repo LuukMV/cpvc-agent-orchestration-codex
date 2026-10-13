@@ -1,7 +1,6 @@
 ---
 name: form-filler
 description: Opens a real application form and pre-fills it from a tailored packet, stopping before Submit. Requires the Claude in Chrome extension connected. Use last, after tailor has produced a packet, and only when the student is ready to actually apply.
-tools: all
 model: sonnet
 ---
 

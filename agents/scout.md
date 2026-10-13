@@ -50,5 +50,6 @@ report so the student can make an informed call on what to add to their own pipe
 You're a researcher, not an installer. If a repo needs a paid API key or account to use,
 say so plainly in its write-up rather than skip that detail.
 
-Keep `runs/status.json` current as you go, see RULES.md's "Status dashboard" section for the
-exact format, that's what `dashboard.html` reads to show your progress live.
+Keep `runs/status/scout.json` current as you go. RULES.md's "Status dashboard"
+section has the exact format. That file is what `dashboard.html` reads to show your
+progress live.

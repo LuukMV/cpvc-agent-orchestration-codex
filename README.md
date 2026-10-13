@@ -13,8 +13,7 @@ useful, but yours to review before anything goes out.
 
 Using Claude Code instead? This is the Codex version. Head to the
 [Claude Code version](https://github.com/LuukMV/cpvc-job-pipeline-claude) instead, same
-pipeline, same rules, same output, built for spawned teammates instead of one sequential
-session.
+pipeline, same rules, same output, run as parallel teammates instead of one role at a time.
 
 ## What you'll end up with
 
@@ -36,10 +35,12 @@ Seven roles. The first five run one after another in a single Codex session:
   improve and it researches 5 real, vetted GitHub repos that could help, with pros and
   cons, and lets you decide. It never installs or wires anything in on its own
 
-Codex doesn't spawn parallel teammates the way Claude Code does, so it adopts each role
-itself, in sequence, re-reading the handoff files (`runs/found.md`, `runs/validated.md`,
+This version runs the roles one at a time on purpose: Codex adopts each role itself, in
+sequence, re-reading the handoff files (`runs/found.md`, `runs/validated.md`,
 `runs/packets/`) between steps instead of relying on its own memory of a few steps back.
-Scout runs on its own, whenever you ask for it.
+That makes every handoff easy to watch and debug. Once you've seen it work, try the
+Claude Code version to see the same files drive parallel teammates. Scout runs on its own,
+whenever you ask for it.
 
 ## Prerequisites
 
@@ -92,16 +93,20 @@ resume/LinkedIn text above it if you're on the fast path). If Codex doesn't act 
 
 ### Optional: watch it on the dashboard too
 
-Every role keeps `runs/status.json` updated as it works (see `RULES.md`), and
-`dashboard.html` turns that into a live status board, one card per role, showing what it's
-working on right now and how many it's finished. In a second terminal, from the repo root:
+Every role writes its own small status file in `runs/status/` as it works (see
+`RULES.md`), and `dashboard.html` turns those into a live status board, one card per role,
+showing what it's working on right now and how many it's finished. In a second terminal,
+from the repo root:
 
 ```bash
-python3 -m http.server 8010
+python3 -m http.server 8010 --bind 127.0.0.1
 ```
 
 Then open `http://localhost:8010/dashboard.html` (opening the file directly won't work, it
 has to be served). Leave it open in a tab while the pipeline runs.
+
+Don't drop `--bind 127.0.0.1`. Without it the server listens on every network you're on,
+and anyone on the same wifi could open your `PROFILE.md` and packets from their laptop.
 
 ## Step 5: read your packets
 
@@ -147,6 +152,11 @@ You click submit.
 - **A filled-out form disappeared**: almost always a tab got reused instead of opened fresh.
   `RULES.md` and `agents/form-filler.md` both call this out, it's a real failure mode, not a
   hypothetical.
+- **Dashboard says "Not connected yet"**: you opened `dashboard.html` as a file. Start the
+  server from the repo root (`python3 -m http.server 8010 --bind 127.0.0.1`) and open
+  `http://localhost:8010/dashboard.html`. "Address already in use" means port 8010 is
+  taken, use 8011 in both places. A card stuck on "No update for N min" means that agent
+  stalled, go check on it.
 - **A packet keeps coming back FAILED**: that usually means `PROFILE.md` is too thin (common
   right after the fast path) for the tailor to write specific-enough bullets without
   reaching. Fill in more of the Experience/Projects tables and rerun.

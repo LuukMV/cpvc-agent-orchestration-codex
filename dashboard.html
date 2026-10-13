@@ -49,6 +49,7 @@ h1 { font: 700 clamp(24px, 4vw, 34px)/1.15 var(--font-display); margin: 10px 0 4
 .total { margin-top: 10px; font: 600 13px var(--font-mono); color: var(--fg); }
 .total b { font: 700 20px var(--font-display); color: var(--accent); margin-right: 6px; }
 
+.quiet { margin-top: 8px; font: 600 12px var(--font-mono); color: var(--warn); }
 .updated { margin-top: 22px; font: 12px var(--font-mono); color: var(--muted); text-align: center; }
 </style>
 </head>
@@ -56,12 +57,12 @@ h1 { font: 700 clamp(24px, 4vw, 34px)/1.15 var(--font-display); margin: 10px 0 4
 <div class="wrap">
   <span class="eyebrow">CPVC Job Pipeline</span>
   <h1>Pipeline dashboard</h1>
-  <p class="sub">Reads <code>runs/status.json</code> every 2 seconds. Each agent updates its own card as it works.</p>
+  <p class="sub">Reads <code>runs/status/</code> every 2 seconds. Each agent writes its own file as it works, so this is what they are actually doing, not a guess.</p>
 
   <div id="connfail">
     <span class="tag">Not connected yet</span>
     <p style="margin:0">This page can't read local files directly. Run a tiny local server from the repo root, then open this page through it.</p>
-    <pre>python3 -m http.server 8010</pre>
+    <pre>python3 -m http.server 8010 --bind 127.0.0.1</pre>
     <p style="margin:8px 0 0">Then open <code>http://localhost:8010/dashboard.html</code> instead of this file directly.</p>
   </div>
 
@@ -71,46 +72,64 @@ h1 { font: 700 clamp(24px, 4vw, 34px)/1.15 var(--font-display); margin: 10px 0 4
 
 <script>
 (function () {
-  var STAGES = ["finder", "validator", "tailor", "fact-checker", "scout"];
+  var STAGES = ["intake", "finder", "validator", "tailor", "fact-checker", "scout"];
+  var QUIET_MS = 3 * 60 * 1000;
   var grid = document.getElementById("grid");
   var cards = {};
+  var last = {};
 
   STAGES.forEach(function (key) {
     var card = document.createElement("div");
     card.className = "card";
     card.innerHTML =
-      '<div class="head"><span class="name">' + key + '</span><span class="pill idle">idle</span></div>' +
-      '<div class="current blank">Nothing yet</div>' +
-      '<div class="total"><b>0</b>completed</div>';
+      '<div class="head"><span class="name"></span><span class="pill idle">idle</span></div>' +
+      '<div class="current blank">Not started</div>' +
+      '<div class="total"><b>0</b>finished</div>' +
+      '<div class="quiet" hidden></div>';
+    card.querySelector(".name").textContent = key;
     grid.appendChild(card);
     cards[key] = card;
   });
 
-  function render(data) {
-    document.getElementById("connfail").classList.remove("show");
-    STAGES.forEach(function (key) {
-      var card = cards[key];
-      var s = (data && data.stages && data.stages[key]) || { state: "idle", current: "", total: 0 };
-      var pill = card.querySelector(".pill");
-      pill.className = "pill " + (s.state || "idle");
-      pill.textContent = s.state || "idle";
-      card.classList.toggle("is-working", s.state === "working");
-      var cur = card.querySelector(".current");
-      if (s.current) { cur.textContent = s.current; cur.classList.remove("blank"); }
-      else { cur.textContent = s.state === "done" ? "Finished its run" : "Nothing yet"; cur.classList.add("blank"); }
-      card.querySelector(".total b").textContent = s.total || 0;
-    });
-    var when = data && data.updated ? new Date(data.updated) : null;
-    document.getElementById("updated").textContent = when && !isNaN(when)
-      ? "last update: " + when.toLocaleTimeString()
-      : "waiting for the first update…";
+  function paint(key, s) {
+    var card = cards[key];
+    var state = s && (s.state === "working" || s.state === "done") ? s.state : "idle";
+    var pill = card.querySelector(".pill");
+    pill.className = "pill " + state;
+    pill.textContent = state;
+    card.classList.toggle("is-working", state === "working");
+    var cur = card.querySelector(".current");
+    if (s && s.current) { cur.textContent = s.current; cur.classList.remove("blank"); }
+    else { cur.textContent = state === "done" ? "Finished its run" : "Not started"; cur.classList.add("blank"); }
+    card.querySelector(".total b").textContent = (s && Number(s.total)) || 0;
+    var quiet = card.querySelector(".quiet");
+    var t = s && s.savedAt ? s.savedAt : NaN;
+    var age = Date.now() - t;
+    if (state === "working" && !isNaN(t) && age > QUIET_MS) {
+      quiet.hidden = false;
+      quiet.textContent = "No update for " + Math.round(age / 60000) + " min. Check on this one.";
+    } else { quiet.hidden = true; }
+    return isNaN(t) ? 0 : t;
   }
 
   function poll() {
-    fetch("runs/status.json", { cache: "no-store" })
-      .then(function (r) { if (!r.ok) throw new Error("not found"); return r.json(); })
-      .then(render)
-      .catch(function () { document.getElementById("connfail").classList.add("show"); });
+    var unreachable = 0;
+    Promise.all(STAGES.map(function (key) {
+      return fetch("runs/status/" + key + ".json", { cache: "no-store" })
+        .then(function (r) {
+          if (!r.ok) return null;
+          var saved = Date.parse(r.headers.get("Last-Modified") || "");
+          return r.json().then(function (s) { if (!s || typeof s !== "object") return last[key] || null; s.savedAt = saved; return s; },
+                               function () { return last[key] || null; });
+        }, function () { unreachable++; return last[key] || null; })
+        .then(function (s) { last[key] = s; return paint(key, s); });
+    })).then(function (times) {
+      document.getElementById("connfail").classList.toggle("show", unreachable === STAGES.length);
+      var latest = Math.max.apply(null, times);
+      document.getElementById("updated").textContent = latest > 0
+        ? "last update " + new Date(latest).toLocaleTimeString()
+        : "Waiting for the first agent to start…";
+    });
   }
 
   poll();

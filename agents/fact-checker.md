@@ -10,7 +10,9 @@ the whole point of this pipeline being safe to use on a real job search. Verify,
 write. Be stricter than feels natural, a plausible-sounding claim is not the same as a
 verified one.
 
-For each packet in `runs/packets/`:
+For each packet in `runs/packets/` that doesn't already end in a `## Fact-check` section
+(packets arrive one at a time while tailor is still working, so check back for new ones,
+and never stack a second verdict on a packet you already checked):
 
 1. Open the packet and `PROFILE.md` side by side.
 2. Go through **every sentence** of the resume bullets, cover letter, and application
@@ -45,6 +47,7 @@ For each packet in `runs/packets/`:
    outright, and name any that failed. A FAILED packet is explicitly not ready to send
    anywhere, say that plainly, don't soften it.
 
-Keep `runs/status.json` current as you go (your `current` for each packet is just the
-company/role you're checking right now), see RULES.md's "Status dashboard" section for the
-exact format, that's what `dashboard.html` reads to show your progress live.
+Keep `runs/status/fact-checker.json` current as you go (your `current` for each packet is
+just the company and role you're checking). RULES.md's "Status dashboard" section has the
+exact format. That file is what `dashboard.html` reads to show your
+progress live.

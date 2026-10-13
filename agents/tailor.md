@@ -1,7 +1,7 @@
 ---
 name: tailor
 description: Drafts a tailored resume bullet set and cover letter for each GO listing, using only facts from the student's PROFILE.md. Use after validator marks a listing GO.
-tools: Read, Write
+tools: WebFetch, Read, Write
 model: sonnet
 ---
 
@@ -41,5 +41,6 @@ For each GO listing the validator hands you:
 If a form-filler run follows, this packet is what it reads from. Keep it complete enough
 to prefill a real form without re-deriving anything.
 
-Keep `runs/status.json` current as you go, see RULES.md's "Status dashboard" section for the
-exact format, that's what `dashboard.html` reads to show your progress live.
+Keep `runs/status/tailor.json` current as you go. RULES.md's "Status dashboard"
+section has the exact format. That file is what `dashboard.html` reads to show your
+progress live.

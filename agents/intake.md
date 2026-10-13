@@ -40,3 +40,7 @@ accuracy.
 You produce a starting point. The fact-checker agent downstream treats everything in
 `PROFILE.md` as ground truth, so don't write anything here you're not confident is accurate
 to the source material.
+
+Keep `runs/status/intake.json` current as you go. RULES.md's "Status dashboard"
+section has the exact format. That file is what `dashboard.html` reads to show your
+progress live.

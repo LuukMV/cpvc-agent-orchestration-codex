@@ -1,2 +1,6 @@
+# Your real info and everything the pipeline writes about your job search stays local.
 PROFILE.md
+runs/**
+!runs/**/
+!runs/**/.gitkeep
 .DS_Store

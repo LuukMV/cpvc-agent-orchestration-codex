@@ -1,8 +1,16 @@
 # AGENTS.md: Codex entry point
 
 This repo is a job pipeline, each stage defined as a plain markdown role file in `agents/`.
-Codex doesn't spawn parallel teammates the way Claude Code does, so adopt each role
-yourself, in sequence, in this one session, instead.
+Run it one role at a time: adopt each role yourself, in sequence, in this one session. Don't
+spawn subagents for these stages, the point of this version is that each handoff is visible.
+
+The role files were written to also work as Claude Code teammates, so when you read one:
+- Ignore the YAML frontmatter at the top (`name`, `tools`, `model`). It's Claude Code config.
+- Where a role says to "message" another teammate, skip that. The next role reads the file
+  you just wrote instead, which is the real handoff anyway.
+- Do follow its status instruction: as you work through each role, keep that role's file in
+  `runs/status/` current exactly as `RULES.md` describes, so `dashboard.html` shows which
+  role you're in and what you're doing.
 
 **Read `RULES.md` in full before doing anything.** Those rules apply to every stage below,
 no exceptions: never fabricate a fact not in `PROFILE.md`, every claim in a packet must

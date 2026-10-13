@@ -25,5 +25,6 @@ listings, not to judge or tailor anything.
 Don't screen for ghost listings yourself, that's the validator's job. Just don't include
 anything obviously outside the student's stated location/term/dealbreakers from `PROFILE.md`.
 
-Keep `runs/status.json` current as you go, see RULES.md's "Status dashboard" section for the
-exact format, that's what `dashboard.html` reads to show your progress live.
+Keep `runs/status/finder.json` current as you go. RULES.md's "Status dashboard"
+section has the exact format. That file is what `dashboard.html` reads to show your
+progress live.
