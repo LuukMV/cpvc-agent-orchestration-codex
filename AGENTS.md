@@ -1,8 +1,8 @@
 # AGENTS.md: Codex entry point
 
-This repo is a 6-stage job pipeline, each stage defined as a plain markdown role file in
-`agents/`. Codex doesn't spawn parallel teammates the way Claude Code does, so adopt each
-role yourself, in sequence, in this one session, instead.
+This repo is a job pipeline, each stage defined as a plain markdown role file in `agents/`.
+Codex doesn't spawn parallel teammates the way Claude Code does, so adopt each role
+yourself, in sequence, in this one session, instead.
 
 **Read `RULES.md` in full before doing anything.** Those rules apply to every stage below,
 no exceptions: never fabricate a fact not in `PROFILE.md`, every claim in a packet must
@@ -56,7 +56,15 @@ touches a real website with their real information.
 3. Report exactly what's filled, what's left blank and why, and that the tab is open and
    ready for the user to review and submit themselves.
 
+## Scout step (separate, only when the user asks)
+
+Use this when the user wants to improve one specific part of the pipeline rather than run
+the core stages. Read `agents/scout.md` and adopt that role for whatever aspect they name.
+Scout only researches real GitHub repos and writes a pros/cons comparison to
+`runs/scouted/<aspect>.md`, it never clones, installs, or wires anything in. See
+`prompts/scout-prompt.md` for the copy-paste version.
+
 ## Quick start
 
-See `prompts/codex-kickoff-prompt.md` for the copy-paste version of the core pipeline
-prompt, if you'd rather paste it explicitly than rely on this file loading automatically.
+See `prompts/kickoff-prompt.md` for the copy-paste version of the core pipeline prompt, if
+you'd rather paste it explicitly than rely on this file loading automatically.

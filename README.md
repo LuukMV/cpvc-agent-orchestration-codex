@@ -18,7 +18,7 @@ session.
 
 ## What you'll end up with
 
-Six roles, run one after another in a single Codex session:
+Seven roles. The first five run one after another in a single Codex session:
 
 - **intake**: builds a first-draft profile from a pasted resume or LinkedIn, so you get
   real results in minutes instead of filling out a form first
@@ -32,10 +32,14 @@ Six roles, run one after another in a single Codex session:
   traces exactly to your profile or the packet is marked FAILED, not "close enough"
 - **form-filler** (optional, needs browser-control tooling): opens the real application and
   fills it in, stopping before the Submit button
+- **scout** (optional, run any time): point it at one part of the pipeline you want to
+  improve and it researches 5 real, vetted GitHub repos that could help, with pros and
+  cons, and lets you decide. It never installs or wires anything in on its own
 
 Codex doesn't spawn parallel teammates the way Claude Code does, so it adopts each role
 itself, in sequence, re-reading the handoff files (`runs/found.md`, `runs/validated.md`,
 `runs/packets/`) between steps instead of relying on its own memory of a few steps back.
+Scout runs on its own, whenever you ask for it.
 
 ## Prerequisites
 
@@ -136,8 +140,12 @@ You click submit.
 
 ## Going further
 
-- Add a seventh role: an outreach step that finds a real hiring-manager contact and drafts a
-  connection note (draft only, you send it).
+- **Pick one part of the pipeline to upgrade, then scout it.** Open `prompts/scout-prompt.md`,
+  name the aspect you want to improve (better ghost-job detection, more reliable resume
+  parsing, a smarter outreach step, anything), and paste the prompt in. Scout comes back
+  with 5 real, actively-maintained repos, their pros and cons, and how each could plug into
+  this pipeline, written to `runs/scouted/<aspect>.md`. You pick, nothing gets wired in
+  automatically.
 - Rerun `finder` with a different target role in `PROFILE.md` to see it build a fresh batch.
 - Try the [Claude Code version](https://github.com/LuukMV/cpvc-job-pipeline-claude) to see
   the same roles run as parallel teammates instead of one sequential session.

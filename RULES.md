@@ -1,8 +1,8 @@
 # Pipeline rules: every agent follows these
 
-These apply to intake, finder, validator, tailor, fact-checker, and form-filler. They exist
-because a system that fabricates facts or submits things on your behalf is worse than no
-system at all.
+These apply to intake, finder, validator, tailor, fact-checker, form-filler, and scout. They
+exist because a system that fabricates facts or submits things on your behalf is worse than
+no system at all.
 
 ## Source of truth
 Every fact about you comes from `PROFILE.md` (copy `PROFILE_TEMPLATE.md` to this name and
@@ -49,3 +49,11 @@ name. Under 250 words.
 ## Ghost-listing signals (validator uses these; see `agents/validator.md` for the
 full checklist)
 A listing that fails enough of these gets marked SKIP, not silently dropped, always say why.
+
+## Recommending outside repos (scout agent only)
+- Never clone, install, run, or execute anything from a repo you find. Scout researches and
+  writes a comparison, it doesn't integrate anything into this pipeline.
+- Only recommend a repo that has a license, recent real activity, and a README that matches
+  what the code appears to do. Leave a repo off the list entirely rather than including it
+  with a safety caveat attached.
+- Say plainly when a repo needs a paid API key, account, or service to actually work.
