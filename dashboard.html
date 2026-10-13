@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pipeline Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Manrope:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root {
+  --bg: #f5f8fb; --surface: #ffffff; --fg: #0d1d30; --muted: #3a4f68; --line: #d5dfe9;
+  --accent: #27837e; --mint: #6de1d7; --mint-deep: #39a49d; --on-accent: #0d1d30;
+  --accent-soft: #e2f9f7; --warn: #9a5b00; --warn-soft: #fbf0dc;
+  --font-display: "Unbounded", "Avenir Next", "Segoe UI", sans-serif;
+  --font-body: "Manrope", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #0d1d30; --surface: #18273d; --fg: #f5f8fb; --muted: #98abbf; --line: #26384f;
+    --accent: #6de1d7; --mint: #6de1d7; --mint-deep: #4fc3ba; --on-accent: #0d1d30;
+    --accent-soft: #12303b; --warn: #f0b45a; --warn-soft: #2c2a22; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.5 var(--font-body); padding: 32px 20px 60px; }
+.wrap { max-width: 980px; margin: 0 auto; }
+.eyebrow { display: inline-flex; align-items: center; gap: 8px; font: 600 11px/1 var(--font-mono); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+.eyebrow::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--mint); }
+h1 { font: 700 clamp(24px, 4vw, 34px)/1.15 var(--font-display); margin: 10px 0 4px; letter-spacing: -.01em; }
+.sub { color: var(--muted); margin: 0 0 24px; font-size: 15px; }
+#connfail { display: none; border: 1px dashed var(--line); border-radius: 12px; padding: 16px 18px; margin-bottom: 20px; background: var(--surface); }
+#connfail.show { display: block; }
+#connfail .tag { display: block; font: 600 11px var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--warn); margin-bottom: 6px; }
+#connfail pre { margin: 8px 0 0; background: var(--warn-soft); border-radius: 8px; padding: 10px 12px; font: 13px var(--font-mono); overflow-x: auto; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; min-width: 0; transition: border-color .2s; }
+.card.is-working { border-color: var(--mint); }
+.card .head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.card .name { font: 700 15px var(--font-display); text-transform: uppercase; letter-spacing: .01em; }
+.pill { font: 600 10px var(--font-mono); letter-spacing: .1em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
+.pill.idle { background: var(--line); color: var(--muted); }
+.pill.working { background: var(--accent-soft); color: var(--accent); }
+.pill.working::before { content: "\25cf"; margin-right: 5px; display: inline-block; animation: pulse 1.2s ease-in-out infinite; }
+.pill.done { background: var(--mint); color: var(--on-accent); }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
+.current { margin-top: 10px; font-size: 13.5px; color: var(--muted); min-height: 2.6em; line-height: 1.4; }
+.current.blank { font-style: italic; opacity: .6; }
+.total { margin-top: 10px; font: 600 13px var(--font-mono); color: var(--fg); }
+.total b { font: 700 20px var(--font-display); color: var(--accent); margin-right: 6px; }
+
+.updated { margin-top: 22px; font: 12px var(--font-mono); color: var(--muted); text-align: center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="eyebrow">CPVC Job Pipeline</span>
+  <h1>Pipeline dashboard</h1>
+  <p class="sub">Reads <code>runs/status.json</code> every 2 seconds. Each agent updates its own card as it works.</p>
+
+  <div id="connfail">
+    <span class="tag">Not connected yet</span>
+    <p style="margin:0">This page can't read local files directly. Run a tiny local server from the repo root, then open this page through it.</p>
+    <pre>python3 -m http.server 8010</pre>
+    <p style="margin:8px 0 0">Then open <code>http://localhost:8010/dashboard.html</code> instead of this file directly.</p>
+  </div>
+
+  <div class="grid" id="grid"></div>
+  <p class="updated" id="updated"></p>
+</div>
+
+<script>
+(function () {
+  var STAGES = ["finder", "validator", "tailor", "fact-checker", "scout"];
+  var grid = document.getElementById("grid");
+  var cards = {};
+
+  STAGES.forEach(function (key) {
+    var card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML =
+      '<div class="head"><span class="name">' + key + '</span><span class="pill idle">idle</span></div>' +
+      '<div class="current blank">Nothing yet</div>' +
+      '<div class="total"><b>0</b>completed</div>';
+    grid.appendChild(card);
+    cards[key] = card;
+  });
+
+  function render(data) {
+    document.getElementById("connfail").classList.remove("show");
+    STAGES.forEach(function (key) {
+      var card = cards[key];
+      var s = (data && data.stages && data.stages[key]) || { state: "idle", current: "", total: 0 };
+      var pill = card.querySelector(".pill");
+      pill.className = "pill " + (s.state || "idle");
+      pill.textContent = s.state || "idle";
+      card.classList.toggle("is-working", s.state === "working");
+      var cur = card.querySelector(".current");
+      if (s.current) { cur.textContent = s.current; cur.classList.remove("blank"); }
+      else { cur.textContent = s.state === "done" ? "Finished its run" : "Nothing yet"; cur.classList.add("blank"); }
+      card.querySelector(".total b").textContent = s.total || 0;
+    });
+    var when = data && data.updated ? new Date(data.updated) : null;
+    document.getElementById("updated").textContent = when && !isNaN(when)
+      ? "last update: " + when.toLocaleTimeString()
+      : "waiting for the first update…";
+  }
+
+  function poll() {
+    fetch("runs/status.json", { cache: "no-store" })
+      .then(function (r) { if (!r.ok) throw new Error("not found"); return r.json(); })
+      .then(render)
+      .catch(function () { document.getElementById("connfail").classList.add("show"); });
+  }
+
+  poll();
+  setInterval(poll, 2000);
+})();
+</script>
+</body>
+</html>

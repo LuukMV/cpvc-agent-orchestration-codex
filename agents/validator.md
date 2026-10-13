@@ -38,3 +38,6 @@ For each listing:
 
 Never fabricate what a posting says. If you can't verify something (e.g. the page won't
 load, pay isn't listed), say "couldn't verify: [what]" rather than guessing GO or SKIP.
+
+Keep `runs/status.json` current as you go, see RULES.md's "Status dashboard" section for the
+exact format, that's what `dashboard.html` reads to show your progress live.

@@ -90,6 +90,19 @@ Open `prompts/kickoff-prompt.md`, copy the prompt block, paste it into Codex (wi
 resume/LinkedIn text above it if you're on the fast path). If Codex doesn't act on
 `AGENTS.md` automatically, this prompt spells the steps out explicitly.
 
+### Optional: watch it on the dashboard too
+
+Every role keeps `runs/status.json` updated as it works (see `RULES.md`), and
+`dashboard.html` turns that into a live status board, one card per role, showing what it's
+working on right now and how many it's finished. In a second terminal, from the repo root:
+
+```bash
+python3 -m http.server 8010
+```
+
+Then open `http://localhost:8010/dashboard.html` (opening the file directly won't work, it
+has to be served). Leave it open in a tab while the pipeline runs.
+
 ## Step 5: read your packets
 
 Once it's done, open `runs/validated.md` to see every listing's verdict and why (SKIP always

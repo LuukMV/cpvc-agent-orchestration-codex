@@ -57,3 +57,18 @@ A listing that fails enough of these gets marked SKIP, not silently dropped, alw
   what the code appears to do. Leave a repo off the list entirely rather than including it
   with a safety caveat attached.
 - Say plainly when a repo needs a paid API key, account, or service to actually work.
+
+## Status dashboard (finder, validator, tailor, fact-checker, scout)
+`runs/status.json` is what `dashboard.html` reads to show a live view of the pipeline.
+Keep it true, not optimistic:
+- If the file doesn't exist yet, create it with every one of these keys set to
+  `{"state": "idle", "current": "", "total": 0}`: `finder`, `validator`, `tailor`,
+  `fact-checker`, `scout`.
+- Before you start working, set your own key's `state` to `"working"`.
+- Before each individual item (a listing, a packet, a candidate repo), set your `current`
+  to one short plain sentence describing exactly what you're doing right now.
+- The moment you finish one item, increment your `total` by 1.
+- When your run ends, set your `state` to `"done"`.
+- Read the whole file, change only your own key, write the whole file back as valid JSON.
+  Never touch another agent's key, and never write a `current` or `total` that isn't true
+  at that moment, this is a status board, not a progress bar for show.

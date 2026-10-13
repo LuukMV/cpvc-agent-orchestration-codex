@@ -40,3 +40,6 @@ For each GO listing the validator hands you:
 
 If a form-filler run follows, this packet is what it reads from. Keep it complete enough
 to prefill a real form without re-deriving anything.
+
+Keep `runs/status.json` current as you go, see RULES.md's "Status dashboard" section for the
+exact format, that's what `dashboard.html` reads to show your progress live.

@@ -1,0 +1,10 @@
+{
+  "updated": null,
+  "stages": {
+    "finder": {"state": "idle", "current": "", "total": 0},
+    "validator": {"state": "idle", "current": "", "total": 0},
+    "tailor": {"state": "idle", "current": "", "total": 0},
+    "fact-checker": {"state": "idle", "current": "", "total": 0},
+    "scout": {"state": "idle", "current": "", "total": 0}
+  }
+}

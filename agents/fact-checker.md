@@ -44,3 +44,7 @@ For each packet in `runs/packets/`:
 7. Finish with a one-line summary to the user: how many packets checked, how many passed
    outright, and name any that failed. A FAILED packet is explicitly not ready to send
    anywhere, say that plainly, don't soften it.
+
+Keep `runs/status.json` current as you go (your `current` for each packet is just the
+company/role you're checking right now), see RULES.md's "Status dashboard" section for the
+exact format, that's what `dashboard.html` reads to show your progress live.
