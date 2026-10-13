@@ -20,8 +20,11 @@ For each GO listing the validator hands you:
    number exactly as written in `PROFILE.md`. Never round up, generalize into a bigger
    claim, or add a result that isn't there.
 4. Draft a cover letter under 250 words following `RULES.md`'s voice rules. Open with the
-   most relevant real experience, connect it to what this specific company/team does
-   (pull that from the posting, not invention), and close with genuine interest.
+   most relevant real experience, connect it to what this specific company/team does, and
+   close with genuine interest. Every claim about the company, team, or role must come from
+   a line you copy word for word into the packet's `## From the posting` section. If you
+   can't quote it, don't say it. That's what keeps the letter specific without inventing
+   anything about the employer.
 5. If the posting asks application questions, draft an answer to each from `PROFILE.md`
    facts only. If none are visible, draft a 100-word "why us" answer.
 6. Anything you needed that wasn't in `PROFILE.md`, write `[CONFIRM: ...]` inline instead of
@@ -32,11 +35,18 @@ For each GO listing the validator hands you:
 # <Company>: <Role>
 **Listing:** <URL> · **Location:** ... · **Pay:** ... · **Validator verdict:** GO
 
+## From the posting
+- "<exact sentence copied from the posting>"   (every company/role claim below cites one of these)
 ## Resume bullets to use
 ## Cover letter
 ## Application question answers
 ## Questions for you
 ```
+
+**Revising a packet that FAILED fact-check:** fix only the lines the fact-checker flagged,
+using its Fix suggestion for each. Delete the old `## Fact-check` section (so the packet gets
+checked again) and add a `## Revision notes` list saying what you changed and why. Don't
+touch lines that weren't flagged.
 
 If a form-filler run follows, this packet is what it reads from. Keep it complete enough
 to prefill a real form without re-deriving anything.

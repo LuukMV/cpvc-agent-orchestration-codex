@@ -35,6 +35,7 @@ never gets committed or shared).
 |---|---|
 | School | |
 | Degree & major | |
+| Currently enrolled (yes / no) | |
 | Expected graduation | |
 | GPA (only if you want it on forms) | |
 | Relevant coursework (2-4 classes worth naming) | |

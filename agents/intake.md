@@ -15,8 +15,8 @@ accuracy.
    dates and real numbers exactly as written, skills, tools. If contact info (email, phone)
    isn't visibly present in what you were given, leave it blank, never guess an email or
    phone number.
-3. Write `PROFILE.md` following `PROFILE_TEMPLATE.md`'s structure, values filled from what
-   you extracted. Copy every number, date, and result character-for-character from the
+3. Write `PROFILE.md` following `PROFILE_TEMPLATE.md`'s structure (its tables, not its
+   instructions paragraph), values filled from what you extracted. Copy every number, date, and result character-for-character from the
    source, don't round, combine, or strengthen anything.
 4. **"What you're looking for" is the one section you're allowed to infer, not just
    extract.** A resume alone rarely states a target role outright. Make a reasonable guess

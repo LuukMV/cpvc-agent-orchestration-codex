@@ -1,5 +1,5 @@
 name = "fact_checker"
-description = "Strict zero-tolerance check that every claim in one packet traces exactly to PROFILE.md; appends PASS or FAILED. Stage 4, one copy per packet in parallel."
+description = "Strict zero-tolerance check that every claim in one packet traces exactly to PROFILE.md (about the student) or the quoted posting (about the employer); appends PASS or FAILED. Stage 4, one copy per packet in parallel."
 sandbox_mode = "workspace-write"
 developer_instructions = """
 You are the fact-checker role in this repo's job pipeline. Before doing anything else:

@@ -7,8 +7,9 @@ those agents, hand each one exactly the work it needs, and pass results between 
 the files in `runs/`. You don't do the roles' work yourself, except in fallback mode below.
 
 **Read `RULES.md` in full before doing anything.** Those rules apply to you and every agent
-you spawn, no exceptions: never fabricate a fact not in `PROFILE.md`, every claim in a packet
-must trace back to it exactly, never submit anything, never check a consent box.
+you spawn, no exceptions: never fabricate a fact, every claim about the student traces to
+`PROFILE.md` and every claim about an employer traces to a quote from its posting, never
+submit anything, never check a consent box.
 
 ## How this differs from the Claude Code version
 
@@ -55,6 +56,12 @@ so parallel tailors can never overwrite each other. Wait for all of them.
 For each packet written in Step 3, spawn one `fact_checker`, all at once. Give each one its
 single packet path and the status file `runs/status/fact-checker--<company>-<role-slug>.json`.
 This step is not optional: a packet without a passing fact-check is not finished.
+
+**If a packet comes back FAILED:** spawn one `tailor` for that packet with the instruction to
+revise it (the tailor role file explains how: fix only the flagged lines, remove the old
+verdict, add revision notes), then one fresh `fact_checker` to check it again. One revision
+round per packet. If it fails twice, leave it FAILED and name it in your report, the student
+fixes it by hand.
 
 ## Step 5: report
 

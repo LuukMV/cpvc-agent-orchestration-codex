@@ -11,6 +11,10 @@ way it's gitignored). If a form or a cover letter needs something that isn't in
 `PROFILE.md`, write `[CONFIRM: what's missing]` in the output and list it under "Questions
 for you" at the end. Never invent a number, a date, a title, or a result.
 
+Facts about an employer (what the team does, what the role involves) come only from that
+employer's posting, quoted word for word in the packet's `## From the posting` section.
+Nothing about a company gets written from memory or general knowledge.
+
 **One narrow exception**: `intake` is allowed to *guess* the "What you're looking for"
 fields (target role, location) from a resume alone, since a resume rarely states that
 outright, as long as it's clearly marked `(GUESSED, confirm or correct this)`. That guess
@@ -21,7 +25,7 @@ Nothing else in this pipeline gets that leniency.
 - Fabricate a fact, number, date, person, or outcome not present in `PROFILE.md`. This
   includes rounding a number, combining two facts into a stronger one, or inferring a
   result that isn't explicitly stated. "Reasonable paraphrase" is not an exception, every
-  claim in a packet must trace back to an exact statement in `PROFILE.md`.
+  claim about you in a packet must trace back to an exact statement in `PROFILE.md`.
 - **No packet is done until `fact-checker` has run on it and it says PASS.** A packet marked
   FAILED is not ready to use, full stop, not "probably fine."
 - Submit an application, create an account, accept terms, or send an email/message on your

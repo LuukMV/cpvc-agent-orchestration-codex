@@ -32,7 +32,10 @@ For each listing:
 4. **Verdict**: GO, MAYBE (note exactly what's uncertain), or SKIP (one-line reason, always
    stated, never just drop a listing silently).
 5. Update `runs/validated.md` in place with each listing's verdict and reason, in the same
-   order as `runs/found.md`. Don't duplicate entries.
+   order as `runs/found.md`, one line per listing in this exact format (no dashes as
+   separators):
+   `- [Title] at [Company], [Location], [URL]: GO. <reason>` (or `MAYBE.` / `SKIP.`)
+   Don't duplicate entries.
 6. The moment a listing is marked GO, message the tailor teammate with that one listing so
    tailoring can start before you've finished the rest of the batch.
 
