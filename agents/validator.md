@@ -30,7 +30,13 @@ For each listing:
 3. **Check fit against `PROFILE.md`**: location, term/dates, eligibility (major, year,
    citizenship/sponsorship if stated), and any dealbreaker listed there.
 4. **Verdict**: GO, MAYBE (note exactly what's uncertain), or SKIP (one-line reason, always
-   stated, never just drop a listing silently).
+   stated, never just drop a listing silently). MAYBE is for doubt about the *listing*: a
+   page that wouldn't load, a vague term, a weak fit. If the listing itself checks out and
+   the only open question is a fact about the student that `PROFILE.md` leaves blank (work
+   authorization, willingness to relocate, start date), mark it GO and add
+   `[CONFIRM: <the question>]` to the reason. Tailor carries that into the packet for the
+   student to answer, which takes them seconds, instead of the listing never getting a
+   packet at all.
 5. Update `runs/validated.md` in place with each listing's verdict and reason, in the same
    order as `runs/found.md`, one line per listing in this exact format (no dashes as
    separators):
