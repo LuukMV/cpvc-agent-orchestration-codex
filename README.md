@@ -13,11 +13,11 @@ useful, but yours to review before anything goes out.
 
 Using Claude Code instead? This is the Codex version. Head to the
 [Claude Code version](https://github.com/LuukMV/cpvc-job-pipeline-claude) instead, same
-pipeline, same rules, same output, run as parallel teammates instead of one role at a time.
+pipeline, same rules, same output, with teammates that message each other directly.
 
 ## What you'll end up with
 
-Seven roles. The first five run one after another in a single Codex session:
+Seven roles, each one a Codex custom agent in `.codex/agents/`:
 
 - **intake**: builds a first-draft profile from a pasted resume or LinkedIn, so you get
   real results in minutes instead of filling out a form first
@@ -35,16 +35,21 @@ Seven roles. The first five run one after another in a single Codex session:
   improve and it researches 5 real, vetted GitHub repos that could help, with pros and
   cons, and lets you decide. It never installs or wires anything in on its own
 
-This version runs the roles one at a time on purpose: Codex adopts each role itself, in
-sequence, re-reading the handoff files (`runs/found.md`, `runs/validated.md`,
-`runs/packets/`) between steps instead of relying on its own memory of a few steps back.
-That makes every handoff easy to watch and debug. Once you've seen it work, try the
-Claude Code version to see the same files drive parallel teammates. Scout runs on its own,
-whenever you ask for it.
+Your main Codex session acts as a **coordinator**. It spawns the other roles as subagents
+and runs them in waves: one finder, then several validators in parallel on batches of
+listings, then one tailor per GO listing in parallel, then one fact-checker per packet in
+parallel. Codex subagents can't message each other, they only report back to the
+coordinator, so each wave starts once the last one is done and reads the files it wrote
+(`runs/found.md`, `runs/validated.md`, `runs/packets/`). Every parallel copy gets its own
+output file and status file, so no two agents ever write the same file.
+
+That's the contrast with the Claude Code version, where teammates message each other and
+hand off one item at a time. Same files, same rules, two ways to orchestrate. Scout runs on
+its own, whenever you ask for it.
 
 ## Prerequisites
 
-- Codex CLI
+- A current Codex release (CLI, IDE extension or desktop app). Subagents are on by default.
 - Git
 - For the form-filler step only: whatever browser-control tooling your Codex setup has, if
   any
@@ -81,9 +86,15 @@ submit anything for you, never check a consent box on your behalf.
 
 ## Step 3: open this folder in Codex
 
-Codex reads `AGENTS.md` automatically when you open this folder. That file tells it to run
-intake (if needed), then finder, validator, tailor, and fact-checker itself, in one session,
-reading each role's definition from `agents/` as it goes.
+When Codex asks whether to trust this folder, say yes. Codex only loads the project's
+`.codex/` settings for trusted folders, which is where the custom agents and the live web
+search setting live.
+
+Codex reads `AGENTS.md` automatically. That file makes your session the coordinator: it
+spawns intake (if needed), then finder, validators, tailors and fact-checkers as subagents.
+Each agent's file in `.codex/agents/` is short on purpose. It points at the full job
+description in `agents/<role>.md`, so there's one copy of every role to read and edit.
+Type `/agent` in Codex to switch between running agents and watch any one of them work.
 
 ## Step 4: run the kickoff prompt
 
@@ -94,8 +105,9 @@ resume/LinkedIn text above it if you're on the fast path). If Codex doesn't act 
 ### Optional: watch it on the dashboard too
 
 Every role writes its own small status file in `runs/status/` as it works (see
-`RULES.md`), and `dashboard.html` turns those into a live status board, one card per role,
-showing what it's working on right now and how many it's finished. In a second terminal,
+`RULES.md`), and `dashboard.html` turns those into a live status board, one card per
+agent, including each parallel copy, showing what it's working on and how many it's finished.
+Watching five tailor cards light up at once is the fan-out happening for real. In a second terminal,
 from the repo root:
 
 ```bash
@@ -126,12 +138,15 @@ You click submit.
 ## What's actually happening here
 
 - **File-based handoffs**: `runs/found.md` then `runs/validated.md` then `runs/packets/` are
-  the real contract between phases. Codex re-reads them at each step instead of trusting its
-  own memory from earlier in the session, the same pattern the Claude Code version uses
-  between its parallel teammates, just run one phase at a time here instead of concurrently.
+  the real contract between waves. Subagents can't talk to each other, so the files are the
+  only way work moves forward, which is exactly why every parallel copy gets its own file.
+- **Fan out, fan in**: the coordinator splits work into independent pieces (batches of
+  listings, one packet each), runs them in parallel, waits for all of them, then merges
+  (`runs/validated/batch-*.md` into `runs/validated.md`). That's the most common
+  multi-agent pattern there is.
 - **Reusable roles as plain markdown**: the role definitions in `agents/` aren't anything
-  Codex-specific, they're just markdown files with instructions. `AGENTS.md` tells Codex
-  which one to read and adopt at each stage.
+  Codex-specific, they're just markdown files with instructions. The custom agents in
+  `.codex/agents/` and the Claude Code version's teammates all read the same text.
 - **The safety rail is the point**: `RULES.md` is what makes this usable on a real job
   search instead of a demo you'd never trust. Notice the tailor role would rather write
   `[CONFIRM: ...]` than invent a number, the fact-checker would rather fail a packet than
@@ -146,6 +161,10 @@ You click submit.
 
 - **Codex doesn't seem to be following `AGENTS.md`**: paste `prompts/kickoff-prompt.md`'s
   prompt block explicitly instead of relying on automatic pickup.
+- **Subagents don't spawn, or spawn without their role**: check you trusted the folder (the
+  custom agents only load for trusted folders) and that Codex is up to date. If it still
+  won't work, use the fallback prompt at the bottom of `prompts/kickoff-prompt.md`. It runs
+  the same pipeline one role at a time with no subagents.
 - **Form-filler says it has no browser-control tooling**: that's correct behavior, not a
   bug, it won't fake filling a form with plain HTTP requests. Check your Codex setup's
   browser-automation option, or skip that step and apply manually using the packet.
@@ -171,4 +190,5 @@ You click submit.
   automatically.
 - Rerun `finder` with a different target role in `PROFILE.md` to see it build a fresh batch.
 - Try the [Claude Code version](https://github.com/LuukMV/cpvc-job-pipeline-claude) to see
-  the same roles run as parallel teammates instead of one sequential session.
+  the same roles run as teammates that message each other instead of a coordinator with
+  workers.

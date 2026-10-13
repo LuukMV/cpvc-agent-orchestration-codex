@@ -62,6 +62,9 @@ A listing that fails enough of these gets marked SKIP, not silently dropped, alw
 `dashboard.html` shows a live view of the pipeline by reading one small file per agent in
 `runs/status/`. Each agent owns exactly one file, `runs/status/<your-agent-name>.json`, and
 never touches anyone else's, so agents running in parallel can't overwrite each other.
+When several copies of the same role run at once (the Codex version does this), each copy
+gets its own name from whoever spawned it, like `runs/status/tailor--acme-ops-intern.json`.
+Use exactly the name you were given. The dashboard shows each copy as its own card.
 
 The file is always this shape, written in full each time (overwrite, don't append):
 

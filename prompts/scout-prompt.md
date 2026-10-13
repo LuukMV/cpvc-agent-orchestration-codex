@@ -10,8 +10,8 @@ outside the current pipeline entirely, like outreach or interview prep.
 
 ---
 
-Read `RULES.md` in full, then read `agents/scout.md` and adopt that role. Find real,
-actively-maintained GitHub repos that could help with: {ASPECT}. Vet each one for basic
+Read `RULES.md` in full, then spawn the `scout` agent to find real, actively-maintained
+GitHub repos that could help with: {ASPECT}. Vet each one for basic
 safety (license, real recent activity, a README that matches what the code does) before it
 makes the list. Write the top 5 with pros, cons, and how each could plug into this pipeline
 to `runs/scouted/{ASPECT}.md`, then tell me what you found and let me pick.

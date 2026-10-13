@@ -49,6 +49,7 @@ h1 { font: 700 clamp(24px, 4vw, 34px)/1.15 var(--font-display); margin: 10px 0 4
 .total { margin-top: 10px; font: 600 13px var(--font-mono); color: var(--fg); }
 .total b { font: 700 20px var(--font-display); color: var(--accent); margin-right: 6px; }
 
+.item { margin-top: 4px; font: 600 11px var(--font-mono); color: var(--accent); overflow-wrap: anywhere; }
 .quiet { margin-top: 8px; font: 600 12px var(--font-mono); color: var(--warn); }
 .updated { margin-top: 22px; font: 12px var(--font-mono); color: var(--muted); text-align: center; }
 </style>
@@ -57,7 +58,7 @@ h1 { font: 700 clamp(24px, 4vw, 34px)/1.15 var(--font-display); margin: 10px 0 4
 <div class="wrap">
   <span class="eyebrow">CPVC Job Pipeline</span>
   <h1>Pipeline dashboard</h1>
-  <p class="sub">Reads <code>runs/status/</code> every 2 seconds. Each agent writes its own file as it works, so this is what they are actually doing, not a guess.</p>
+  <p class="sub">Reads <code>runs/status/</code> every 2 seconds. Each agent writes its own file as it works, and parallel copies of a role each get their own card, so this is what they are actually doing, not a guess.</p>
 
   <div id="connfail">
     <span class="tag">Not connected yet</span>
@@ -78,21 +79,29 @@ h1 { font: 700 clamp(24px, 4vw, 34px)/1.15 var(--font-display); margin: 10px 0 4
   var cards = {};
   var last = {};
 
-  STAGES.forEach(function (key) {
+  function roleOf(key) { return key.split("--")[0]; }
+  function rank(key) { var i = STAGES.indexOf(roleOf(key)); return i < 0 ? STAGES.length : i; }
+
+  function cardFor(key) {
+    if (cards[key]) return cards[key];
     var card = document.createElement("div");
     card.className = "card";
     card.innerHTML =
       '<div class="head"><span class="name"></span><span class="pill idle">idle</span></div>' +
+      '<div class="item"></div>' +
       '<div class="current blank">Not started</div>' +
       '<div class="total"><b>0</b>finished</div>' +
       '<div class="quiet" hidden></div>';
-    card.querySelector(".name").textContent = key;
-    grid.appendChild(card);
+    var parts = key.split("--");
+    card.querySelector(".name").textContent = parts[0];
+    var item = card.querySelector(".item");
+    if (parts.length > 1) item.textContent = parts.slice(1).join("--"); else item.hidden = true;
     cards[key] = card;
-  });
+    return card;
+  }
 
   function paint(key, s) {
-    var card = cards[key];
+    var card = cardFor(key);
     var state = s && (s.state === "working" || s.state === "done") ? s.state : "idle";
     var pill = card.querySelector(".pill");
     pill.className = "pill " + state;
@@ -112,20 +121,53 @@ h1 { font: 700 clamp(24px, 4vw, 34px)/1.15 var(--font-display); margin: 10px 0 4
     return isNaN(t) ? 0 : t;
   }
 
+  // python's http.server lists a folder's files when you fetch the folder itself.
+  function listStatusFiles() {
+    return fetch("runs/status/", { cache: "no-store" }).then(function (r) {
+      if (!r.ok) return null;
+      return r.text().then(function (html) {
+        var keys = [], re = /href="([^"\/?#]+)\.json"/g, m;
+        while ((m = re.exec(html))) keys.push(decodeURIComponent(m[1]));
+        return keys;
+      });
+    });
+  }
+
+  function readStatus(key) {
+    return fetch("runs/status/" + encodeURIComponent(key) + ".json", { cache: "no-store" })
+      .then(function (r) {
+        if (!r.ok) return null;
+        var saved = Date.parse(r.headers.get("Last-Modified") || "");
+        return r.json().then(function (s) {
+          if (!s || typeof s !== "object") return last[key] || null;
+          s.savedAt = saved;
+          return s;
+        }, function () { return last[key] || null; });
+      }, function () { return last[key] || null; })
+      .then(function (s) { last[key] = s; return paint(key, s); });
+  }
+
   function poll() {
-    var unreachable = 0;
-    Promise.all(STAGES.map(function (key) {
-      return fetch("runs/status/" + key + ".json", { cache: "no-store" })
-        .then(function (r) {
-          if (!r.ok) return null;
-          var saved = Date.parse(r.headers.get("Last-Modified") || "");
-          return r.json().then(function (s) { if (!s || typeof s !== "object") return last[key] || null; s.savedAt = saved; return s; },
-                               function () { return last[key] || null; });
-        }, function () { unreachable++; return last[key] || null; })
-        .then(function (s) { last[key] = s; return paint(key, s); });
-    })).then(function (times) {
-      document.getElementById("connfail").classList.toggle("show", unreachable === STAGES.length);
-      var latest = Math.max.apply(null, times);
+    listStatusFiles().then(function (found) {
+      document.getElementById("connfail").classList.remove("show");
+      var files = found || STAGES.slice();
+      var roles = {};
+      files.forEach(function (k) { roles[roleOf(k)] = true; });
+      var keys = files.slice();
+      STAGES.forEach(function (r) { if (!roles[r]) keys.push(r); });
+      keys.sort(function (a, b) { return rank(a) - rank(b) || (a < b ? -1 : a > b ? 1 : 0); });
+      Object.keys(cards).forEach(function (k) {
+        if (keys.indexOf(k) < 0) { cards[k].remove(); delete cards[k]; delete last[k]; }
+      });
+      keys.forEach(function (k) { grid.appendChild(cardFor(k)); });
+      return Promise.all(keys.map(function (k) {
+        return files.indexOf(k) < 0 ? paint(k, null) : readStatus(k);
+      }));
+    }, function () {
+      document.getElementById("connfail").classList.add("show");
+      return [];
+    }).then(function (times) {
+      var latest = times.length ? Math.max.apply(null, times) : 0;
       document.getElementById("updated").textContent = latest > 0
         ? "last update " + new Date(latest).toLocaleTimeString()
         : "Waiting for the first agent to start…";

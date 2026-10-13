@@ -1,0 +1,12 @@
+# Project settings for this repo. Codex only loads this folder's .codex/ settings after
+# you mark the project as trusted.
+
+# Job postings go stale fast. "live" searches the current web instead of a cached index,
+# so finder sees real openings and validator can tell when a link has died.
+web_search = "live"
+
+[agents]
+enabled = true
+# How many subagents can run at the same time. The coordinator in AGENTS.md spawns
+# validators, tailors and fact-checkers in waves no bigger than this.
+max_concurrent_threads_per_session = 6
