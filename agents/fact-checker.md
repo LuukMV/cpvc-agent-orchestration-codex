@@ -24,7 +24,8 @@ and never stack a second verdict on a packet you already checked):
      `## From the posting` section. Spot-check that those quotes are real by opening the
      listing URL. A quote that isn't actually in the posting fails the packet.
    Phrases of interest or intent ("I'd welcome the chance to...") aren't factual claims,
-   don't flag them.
+   don't flag them. The packet's header line (Listing, Location, Pay, verdict) is copied
+   from `runs/validated.md` and isn't part of what you check.
 3. **None of these count as a match**, even though they feel like reasonable writing:
    - Rounding a number ("almost 40%" when `PROFILE.md` says 38%)
    - Combining two separate facts into one stronger-sounding claim
