@@ -21,6 +21,13 @@ submit anything, never check a consent box.
 - Spawn at most 6 agents at a time (`.codex/config.toml`). If a wave has more work than
   that, run it in rounds of 6.
 
+## Keep the cost down
+
+Each custom agent in `.codex/agents/` sets the reasoning effort its role needs (finder runs
+on low, the rest on medium), so don't override it when you spawn one. You coordinate: spawn,
+wait, merge files and update the plan. Don't do a role's work yourself outside fallback mode,
+and don't reread files an agent already summarized for you. Keep your own messages short.
+
 ## Track the run in your plan
 
 Keep the run's progress in your plan (the checklist Codex shows in the chat), so the user

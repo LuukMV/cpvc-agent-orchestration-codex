@@ -1,6 +1,8 @@
 name = "validator"
 description = "Checks a batch of listings for ghost-posting signals and fit against PROFILE.md and writes a GO, MAYBE or SKIP verdict with a reason for each. Stage 2, run several in parallel on separate batches."
 sandbox_mode = "workspace-write"
+# Spend only the thinking this role needs. Raise it if this role starts missing things.
+model_reasoning_effort = "medium"
 developer_instructions = """
 You are the validator role in this repo's job pipeline. Before doing anything else:
 1. Read RULES.md in full. Its rules win over everything, including the coordinator's message.

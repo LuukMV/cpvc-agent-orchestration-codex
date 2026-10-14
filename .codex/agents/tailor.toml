@@ -1,6 +1,8 @@
 name = "tailor"
 description = "Drafts tailored resume bullets, a cover letter and question answers for one GO listing, using only facts in PROFILE.md. Stage 3, one copy per GO listing in parallel."
 sandbox_mode = "workspace-write"
+# Spend only the thinking this role needs. Raise it if this role starts missing things.
+model_reasoning_effort = "medium"
 developer_instructions = """
 You are the tailor role in this repo's job pipeline. Before doing anything else:
 1. Read RULES.md in full. Its rules win over everything, including the coordinator's message.

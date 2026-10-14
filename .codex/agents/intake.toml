@@ -1,6 +1,8 @@
 name = "intake"
 description = "Builds a first-draft PROFILE.md from pasted resume or LinkedIn text. Spawn first, only when PROFILE.md doesn't exist yet."
 sandbox_mode = "workspace-write"
+# Spend only the thinking this role needs. Raise it if this role starts missing things.
+model_reasoning_effort = "medium"
 developer_instructions = """
 You are the intake role in this repo's job pipeline. Before doing anything else:
 1. Read RULES.md in full. Its rules win over everything, including the coordinator's message.
