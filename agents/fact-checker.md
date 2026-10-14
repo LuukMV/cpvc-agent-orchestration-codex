@@ -16,7 +16,9 @@ and never stack a second verdict on a packet you already checked):
 
 1. Open the packet and `PROFILE.md` side by side.
 2. Go through **every sentence** of the resume bullets, cover letter, and application
-   question answers. A claim is: any number, date, duration, percentage, dollar amount, job
+   question answers, and every line of the packet's `resume.html` (header, summary,
+   education, skills, experience, projects, activities). A leftover `{{...}}` placeholder
+   in `resume.html` is a FAILED issue too. A claim is: any number, date, duration, percentage, dollar amount, job
    title, organization/company/school name, tool or skill, or stated outcome/result. Each
    claim has exactly one valid source:
    - **Claims about the student** must trace to an exact statement in `PROFILE.md`.

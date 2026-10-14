@@ -16,8 +16,11 @@ For the packet you're given (`runs/packets/<company>-<role-slug>/packet.md`):
    has a different application filled out in it, even partially. If you're filling more than
    one application in a session, each one gets its own fresh tab.
 3. Fill every field you can from the packet and `PROFILE.md`: name, contact, education,
-   experience entries, resume upload (if a path is given and the field accepts files), the
-   cover letter or application-question answers from the packet.
+   experience entries, the cover letter or application-question answers from the packet.
+   For the resume upload, use `resume.pdf` in the packet's folder if the student has saved
+   one there, otherwise the PDF path in `PROFILE.md`. If neither exists, leave the upload
+   empty and say the student needs to open `resume.html`, save it as `resume.pdf`, and
+   attach it.
 4. If a field needs something that isn't in the packet or `PROFILE.md`, leave it blank and
    note it in your final summary rather than guessing.
 5. Never check a consent/attestation/e-signature checkbox. Never create an account or type a

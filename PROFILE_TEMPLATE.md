@@ -41,19 +41,24 @@ never gets committed or shared).
 | Relevant coursework (2-4 classes worth naming) | |
 
 ## Experience (one row per job/project you'd pull bullets from)
-| Title | Organization | Dates | 2-3 sentence description with real, specific numbers |
-|---|---|---|---|
-| | | | |
-| | | | |
+| Title | Organization | Location | Dates | 2-3 sentence description with real, specific numbers |
+|---|---|---|---|---|
+| | | | | |
+| | | | | |
 
 ## Skills
 List tools/languages/skills you can actually back up if asked. Don't list anything you'd be
 uncomfortable being asked about in an interview.
 
 ## Projects worth mentioning (optional)
-| Project | 1-2 sentence description with a real result/number if you have one |
-|---|---|
-| | |
+| Project | Dates | 1-2 sentence description with a real result/number if you have one |
+|---|---|---|
+| | | |
+
+## Activities & leadership (optional)
+| Role | Organization | Dates | 1-2 sentences on what you did, with real numbers if you have them |
+|---|---|---|---|
+| | | | |
 
 ## Never say this
 Anything you've learned burns you in a past draft, or anything factually wrong that keeps

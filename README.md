@@ -128,9 +128,13 @@ and anyone on the same wifi could open your `PROFILE.md` and packets from their 
 
 Once it's done, open `runs/validated.md` to see every listing's verdict and why (SKIP always
 comes with a real reason, never a silent drop), then open whatever landed in
-`runs/packets/`. Each packet has resume bullets, a cover letter, question answers, and a
-`## Fact-check` section at the bottom, scroll straight to that first. PASS means every claim
+`runs/packets/`. Each packet has resume bullets, a cover letter, question answers, a tailored
+one-page `resume.html` (built from `RESUME_TEMPLATE.html`), and a `## Fact-check` section at
+the bottom, scroll straight to that first. PASS means every claim
 traced to your profile. FAILED means exactly what it sounds like, don't use that packet as-is.
+
+To use the tailored resume, open `resume.html` in a browser, choose Print, then Save as PDF,
+and save it as `resume.pdf` in the same folder. The form-filler attaches that file for you.
 
 ## Step 6 (optional): pre-fill a real application
 

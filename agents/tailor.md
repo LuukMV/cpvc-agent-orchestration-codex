@@ -42,11 +42,18 @@ For each GO listing the validator hands you:
    - relative dates ("last summer"), use the date as written ("In Summer 2025")
    - a quote reworded or attributed to the wrong person ("the posting says *you* will learn")
    The fact-checker fails every one of these. Catching them now saves a revision round.
-8. Write the full packet to `runs/packets/<company>-<role-slug>/packet.md`:
+8. **Fill in the resume.** Copy `RESUME_TEMPLATE.html` to
+   `runs/packets/<company>-<role-slug>/resume.html` and replace every `{{...}}` placeholder,
+   following the rules in the comment at the top of the template. Use the same tailored
+   bullets as the packet, order experience and skills so the parts that match this posting
+   come first, and delete any section or line `PROFILE.md` has nothing for. No placeholder
+   may be left in the file. Run the same self-check from step 7 on it.
+9. Write the full packet to `runs/packets/<company>-<role-slug>/packet.md`:
 
 ```
 # <Company>: <Role>
 **Listing:** <URL> · **Location:** ... · **Pay:** ... · **Validator verdict:** GO
+**Resume:** resume.html (open it in a browser and save as PDF)
 
 ## From the posting
 - "<exact sentence copied from the posting>"   (every company/role claim below cites one of these)

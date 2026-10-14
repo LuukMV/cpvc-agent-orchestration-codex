@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>{{Full name}} Resume</title>
+<!--
+  RESUME TEMPLATE. Tailor copies this file to runs/packets/<company>-<role>/resume.html
+  and replaces every {{...}} placeholder for one specific job.
+
+  Rules (fact-checker checks this file like the rest of the packet):
+  - Every fact comes from PROFILE.md: names, dates, numbers, schools, employers, skills.
+    Nothing gets rounded, upgraded, or added. If a field is blank in PROFILE.md, leave it
+    out of the resume instead of guessing.
+  - Delete any section or line that has nothing in PROFILE.md behind it (no Projects in
+    PROFILE.md means no PROJECTS section, no phone means no phone in the contact line).
+  - Copy a block (one .entry, one <li>) as many times as you need, and delete unused ones.
+  - Keep it to one printed page. Cut the least relevant bullets first.
+  - Tailoring happens through what you choose and how you order it: lead with the
+    experience and bullets that match the posting, and pick the matching skills first.
+
+  To save as PDF: open this file in a browser, Print, choose "Save as PDF".
+-->
+<style>
+  @page { size: Letter; margin: 0.5in 0.55in; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0 auto; max-width: 7.4in; color: #111;
+    font: 10.5pt/1.32 "Carlito", "Lato", "Calibri", "Helvetica Neue", Arial, sans-serif;
+  }
+  header { text-align: center; margin-bottom: 6px; }
+  header h1 { font-size: 20pt; margin: 0; letter-spacing: .01em; }
+  .contact { margin: 2px 0 0; font-size: 9.5pt; }
+  .contact span { white-space: nowrap; }
+  .contact span + span::before { content: "  |  "; white-space: pre; }
+  .headline { margin: 2px 0 0; font-weight: 700; font-size: 10pt; }
+  h2 {
+    font-size: 11pt; text-transform: uppercase; margin: 9px 0 3px; padding-bottom: 1px;
+    border-bottom: 1px solid #111; letter-spacing: .02em;
+  }
+  p { margin: 0; }
+  .entry { margin: 0 0 4px; }
+  .row { display: flex; justify-content: space-between; gap: 12px; }
+  .row b { font-weight: 700; }
+  .date { white-space: nowrap; }
+  .sub { font-style: italic; }
+  ul { margin: 1px 0 0; padding-left: 16px; }
+  li { margin: 0; }
+  .skills p { margin: 0 0 1px; }
+  @media print { a { color: inherit; text-decoration: none; } }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>{{Full name}}</h1>
+  <p class="contact">
+    <span>{{City, State}}</span>
+    <span>{{Email}}</span>
+    <span>{{Phone}}</span>
+    <span>{{LinkedIn URL}}</span>
+    <span>{{Work authorization, only if PROFILE.md states it}}</span>
+  </p>
+  <p class="headline">{{Field or degree}} | {{2-3 focus areas that match this posting}}</p>
+</header>
+
+<h2>Summary</h2>
+<p>{{2-3 sentences, built only from facts in PROFILE.md, pointed at this posting. Name the degree, the strongest one or two experiences with their real numbers, and the tools that match the posting. No adjectives about yourself that PROFILE.md doesn't support.}}</p>
+
+<h2>Education</h2>
+<div class="entry">
+  <div class="row"><b>{{School}}</b><span class="date">{{Expected graduation}}</span></div>
+  <p class="sub">{{Degree and major}}</p>
+  <p>{{GPA, only if PROFILE.md lists it}}</p>
+  <p>Coursework: {{2-4 classes from PROFILE.md, most relevant to this posting first}}</p>
+</div>
+
+<h2>Skills</h2>
+<div class="skills">
+  <p><b>{{Category, e.g. Analysis}}:</b> {{skills from PROFILE.md that fit this category}}</p>
+  <p><b>{{Category, e.g. Software}}:</b> {{skills from PROFILE.md that fit this category}}</p>
+</div>
+
+<h2>Experience</h2>
+<div class="entry">
+  <div class="row"><b>{{Job title}}, {{Organization}}</b><span class="date">{{Start}} – {{End}}</span></div>
+  <p class="sub">{{City, State, only if PROFILE.md lists it}}</p>
+  <ul>
+    <li>{{Bullet: what you did and the real result, numbers exactly as in PROFILE.md}}</li>
+    <li>{{Bullet}}</li>
+  </ul>
+</div>
+
+<h2>Projects</h2>
+<div class="entry">
+  <div class="row"><b>{{Project name}}</b><span class="date">{{Dates}}</span></div>
+  <ul>
+    <li>{{What you built or analyzed and the real result}}</li>
+  </ul>
+</div>
+
+<h2>Leadership &amp; Activities</h2>
+<div class="entry">
+  <div class="row"><b>{{Role}}, {{Organization}}</b><span class="date">{{Start}} – {{End}}</span></div>
+  <ul>
+    <li>{{What you did, from PROFILE.md}}</li>
+  </ul>
+</div>
+<p><b>Additional activities:</b> {{short list from PROFILE.md, or delete this line}}</p>
+
+</body>
+</html>

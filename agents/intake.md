@@ -15,7 +15,8 @@ accuracy.
 1. Take whatever you're given: pasted LinkedIn profile text, pasted resume text, or a path
    to a resume file (PDF/docx, read it directly if you can).
 2. Extract only what's actually stated: name, education, work/project history with real
-   dates and real numbers exactly as written, skills, tools. If contact info (email, phone)
+   dates, locations and real numbers exactly as written, activities and leadership roles,
+   skills, tools. If contact info (email, phone)
    isn't visibly present in what you were given, leave it blank, never guess an email or
    phone number.
 3. Write `PROFILE.md` following `PROFILE_TEMPLATE.md`'s structure (its tables, not its
