@@ -57,18 +57,28 @@ its own, whenever you ask for it.
 - For the form-filler step only: whatever browser-control tooling your Codex setup has, if
   any
 
-## Step 1: get this repo
+## Step 1: set up a folder, all from the chat
 
-```bash
-git clone https://github.com/LuukMV/cpvc-job-pipeline-codex.git
-cd cpvc-job-pipeline-codex
-```
+You won't need a terminal for any of this, your AI runs every command.
 
-Then install the resume builder's one dependency (once):
+1. Make an empty folder, for example `job-pipeline` on your Desktop, and open it in
+   Codex (add a project or folder, then `job-pipeline`).
+2. Paste this into the chat:
 
-```bash
-npm install --prefix resume-builder
-```
+   ```
+   Set this folder up for the CPVC job pipeline. Run these here, in this empty folder:
+   1. git clone https://github.com/LuukMV/cpvc-job-pipeline-codex.git .
+   2. npm install --prefix resume-builder
+   If git says the folder isn't empty and the only thing in it is a hidden .DS_Store file,
+   delete just that file and try again. If anything else is in the folder, stop and ask me.
+   If git or Node.js isn't installed, stop and tell me how to install it on my computer.
+   When both steps work, tell me it's ready.
+   ```
+
+3. **Start a new chat in the same folder** and use it for everything after this.
+   Say yes when Codex asks whether to trust the folder. Codex reads `AGENTS.md`, the custom
+   agents in `.codex/agents/` and the live web search setting only when a chat starts in a
+   trusted folder.
 
 ## Step 2: get a profile in place (two ways)
 
@@ -81,11 +91,8 @@ Add two lines too, with whatever is true for you: `Work authorization: U.S. citi
 sponsorship needed` and `Currently enrolled: yes`. Resumes almost never say either, and
 without them nearly every packet comes back asking you to confirm them.
 
-**Thorough path, more accurate, slower to start.**
-```bash
-cp PROFILE_TEMPLATE.md PROFILE.md
-```
-Open `PROFILE.md` and fill in your real info: contact details, what you're looking for,
+**Thorough path, more accurate, slower to start.** Ask your AI: "Copy
+PROFILE_TEMPLATE.md to PROFILE.md and open it so I can fill it in." Then fill in your real info: contact details, what you're looking for,
 education, and real experience with real numbers.
 
 Either way, `PROFILE.md` is gitignored, it never gets committed, and every role in this
@@ -97,41 +104,30 @@ Also skim `RULES.md`. It's short, and it's the whole reason this is safe to poin
 job search: never fabricate a fact, verify every claim before it's considered done, never
 submit anything for you, never check a consent box on your behalf.
 
-## Step 3: open this folder in Codex
-
-When Codex asks whether to trust this folder, say yes. Codex only loads the project's
-`.codex/` settings for trusted folders, which is where the custom agents and the live web
-search setting live.
-
-Codex reads `AGENTS.md` automatically. That file makes your session the coordinator: it
-spawns intake (if needed), then finder, validators, tailors and fact-checkers as subagents.
-Each agent's file in `.codex/agents/` is short on purpose. It points at the full job
-description in `agents/<role>.md`, so there's one copy of every role to read and edit.
-Type `/agent` in Codex to switch between running agents and watch any one of them work.
-
-## Step 4: run the kickoff prompt
-
-Open `prompts/kickoff-prompt.md`, copy the prompt block, paste it into Codex (with your
-resume/LinkedIn text above it if you're on the fast path). If Codex doesn't act on
-`AGENTS.md` automatically, this prompt spells the steps out explicitly.
-
-### Optional: watch it on the dashboard too
+## Step 3 (optional): open the live dashboard first
 
 Every role writes its own small status file in `runs/status/` as it works (see
 `RULES.md`), and `dashboard.html` turns those into a live status board, one card per
 agent, including each parallel copy, showing what it's working on and how many it's finished.
-Watching five tailor cards light up at once is the fan-out happening for real. In a second terminal,
-from the repo root:
+Watching five tailor cards light up at once is the fan-out happening for real. Start it before the run, so the board is up when the first agent starts. Ask your AI:
 
-```bash
+```
+Start the pipeline dashboard in the background. From this folder, run:
 python3 -m http.server 8010 --bind 127.0.0.1
+Keep the --bind 127.0.0.1 part exactly as written. Then give me the link to dashboard.html.
 ```
 
-Then open `http://localhost:8010/dashboard.html` (opening the file directly won't work, it
-has to be served). Leave it open in a tab while the pipeline runs.
+Open the link (`http://localhost:8010/dashboard.html`) and leave the tab open while the
+pipeline runs. If the page stops loading once the chat moves on, run that same
+command in a terminal opened in the folder instead.
 
 Don't drop `--bind 127.0.0.1`. Without it the server listens on every network you're on,
 and anyone on the same wifi could open your `PROFILE.md` and packets from their laptop.
+
+## Step 4: run the kickoff prompt
+
+In your fresh chat, send one message: your resume or LinkedIn text and the two extra lines
+(fast path only), then the prompt block from `prompts/kickoff-prompt.md`. Type `/agent` in Codex to switch between running agents and watch any one of them work.
 
 ## Step 5: read your packets
 

@@ -5,7 +5,7 @@ Two ways to get started, pick one:
 - **Fast path**: paste your resume text and/or LinkedIn text right above the prompt block
   below. Codex spawns the `intake` agent to build a first-draft `PROFILE.md` from it before
   running the rest of the pipeline.
-- **Thorough path**: `cp PROFILE_TEMPLATE.md PROFILE.md` and fill it in yourself first.
+- **Thorough path**: ask your AI to copy `PROFILE_TEMPLATE.md` to `PROFILE.md` and fill it in yourself first.
 
 Whichever path you pick, add these two lines (write whatever is true for you):
 
