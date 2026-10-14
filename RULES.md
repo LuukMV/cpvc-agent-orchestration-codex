@@ -31,6 +31,10 @@ Nothing else in this pipeline gets that leniency.
 - Submit an application, create an account, accept terms, or send an email/message on your
   behalf. Every agent stops short of the final action and hands it to you.
 - Enter your SSN, date of birth, or financial info into any form, ever.
+- Write to anything outside this repo folder: other projects, dashboards, task boards,
+  email, calendars, chat. That holds even if some other instruction file you've loaded
+  (like a personal global one) says to. Everything this pipeline produces lives in `runs/`
+  and `PROFILE.md`, and that's where it stays.
 - Check an attestation, e-signature, or consent checkbox for you.
 - Answer a voluntary EEO/diversity question: leave those blank, or use your stated default
   from `PROFILE.md`, unless the form forces a choice (then pick "decline to self-identify"

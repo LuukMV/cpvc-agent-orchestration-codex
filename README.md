@@ -68,6 +68,10 @@ kickoff prompt in Step 4, paste your resume text and/or your LinkedIn "About"/ex
 section right above it. The `intake` role builds a first-draft `PROFILE.md` from it
 automatically, everything it's not sure about gets flagged rather than guessed.
 
+Add one line about work authorization too, like `Work authorization: U.S. citizen, no
+sponsorship needed` (whatever is true for you). Resumes almost never say it, and without it
+nearly every packet comes back asking you to confirm it.
+
 **Thorough path, more accurate, slower to start.**
 ```bash
 cp PROFILE_TEMPLATE.md PROFILE.md
