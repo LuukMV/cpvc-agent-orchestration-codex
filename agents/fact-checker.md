@@ -66,8 +66,3 @@ and never stack a second verdict on a packet you already checked):
 8. Finish with a one-line summary to the user: how many packets checked, how many passed
    outright, and name any that failed. A FAILED packet is explicitly not ready to send
    anywhere, say that plainly, don't soften it.
-
-Keep `runs/status/fact-checker.json` current as you go (your `current` for each packet is
-just the company and role you're checking). RULES.md's "Status dashboard" section has the
-exact format. That file is what `dashboard.html` reads to show your
-progress live.

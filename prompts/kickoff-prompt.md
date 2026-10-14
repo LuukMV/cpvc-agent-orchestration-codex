@@ -27,7 +27,8 @@ Follow `AGENTS.md` as the coordinator. Read `RULES.md` first. Handle Step 0 (spa
 the resume/LinkedIn text above, or confirm `PROFILE.md` exists), then run the pipeline with
 subagents: one finder, then parallel validators on batches of listings, then one tailor per
 GO listing in parallel, then one fact_checker per packet in parallel. Give every agent its
-own output file and status file exactly as `AGENTS.md` describes. Don't run the form-filler
+own output file exactly as `AGENTS.md` describes, and keep your plan current as the run
+moves. Don't run the form-filler
 step. When done, tell me how many listings you found, how many were GO, how many packets
 passed fact-check outright, and name any that failed. Run `node scripts/applications.js`
 first so `runs/APPLICATIONS.md` is current.

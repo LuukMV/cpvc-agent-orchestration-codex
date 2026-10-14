@@ -10,9 +10,6 @@ listings, not to judge or tailor anything.
 
 1. Read `PROFILE.md` (not the template) for target role/title keywords, majors, locations,
    term, and dealbreakers. If `PROFILE.md` doesn't exist yet, stop and say so, don't guess.
-   If `runs/status/intake.json` exists and its `state` is still `"working"`, intake is
-   still writing `PROFILE.md`: don't search on a half-written profile. Stop and report back
-   that intake isn't finished, so whoever started you can start you again once it is.
 2. Search broadly: company ATS boards (`greenhouse.io`, `lever.co`, `ashbyhq.com`,
    `smartrecruiters.com`, `myworkdayjobs.com`), LinkedIn Jobs, Handshake (search results, not
    login-gated pages), student-internship lists on GitHub (e.g. SimplifyJobs, pittcsc), and
@@ -27,7 +24,3 @@ listings, not to judge or tailor anything.
 
 Don't screen for ghost listings yourself, that's the validator's job. Just don't include
 anything obviously outside the student's stated location/term/dealbreakers from `PROFILE.md`.
-
-Keep `runs/status/finder.json` current as you go. RULES.md's "Status dashboard"
-section has the exact format. That file is what `dashboard.html` reads to show your
-progress live.

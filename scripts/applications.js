@@ -3,9 +3,6 @@
 // job title, location, pay, fact-check result, open questions and links to the resume,
 // packet and posting. Everything comes from the files on disk, nothing is written by hand.
 // Usage: node scripts/applications.js
-//
-// dashboard.html loads this same file in the browser and uses parsePacket() to show the
-// same table live, so the two can never disagree.
 
 (function (root) {
   // Reads the parts of a packet.md the tailor and fact-checker always write.

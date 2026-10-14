@@ -34,7 +34,8 @@ Nothing else in this pipeline gets that leniency.
 - Write to anything outside this repo folder: other projects, dashboards, task boards,
   email, calendars, chat. That holds even if some other instruction file you've loaded
   (like a personal global one) says to. Everything this pipeline produces lives in `runs/`
-  and `PROFILE.md`, and that's where it stays.
+  and `PROFILE.md`, and that's where it stays. The session's own built-in task list or plan
+  isn't outside the repo, that's where the run's progress is tracked.
 - Check an attestation, e-signature, or consent checkbox for you.
 - Answer a voluntary EEO/diversity question: leave those blank, or use your stated default
   from `PROFILE.md`, unless the form forces a choice (then pick "decline to self-identify"
@@ -65,24 +66,7 @@ A listing that fails enough of these gets marked SKIP, not silently dropped, alw
   with a safety caveat attached.
 - Say plainly when a repo needs a paid API key, account, or service to actually work.
 
-## Status dashboard (intake, finder, validator, tailor, fact-checker, scout)
-`dashboard.html` shows a live view of the pipeline by reading one small file per agent in
-`runs/status/`. Each agent owns exactly one file, `runs/status/<your-agent-name>.json`, and
-never touches anyone else's, so agents running in parallel can't overwrite each other.
-When several copies of the same role run at once (the Codex version does this), each copy
-gets its own name from whoever spawned it, like `runs/status/tailor--acme-ops-intern.json`.
-Use exactly the name you were given. The dashboard shows each copy as its own card.
-
-The file is always this shape, written in full each time (overwrite, don't append):
-
-```json
-{"state": "working", "current": "Checking Acme Corp, Supply Chain Analyst", "total": 3}
-```
-
-- `state` is `"working"` while you're running and `"done"` when your run ends.
-- `current` is one short plain sentence about exactly what you're doing right now.
-- `total` is how many items you've fully finished (listings, packets, repos).
-- Write it when you start, before each new item, and when you finish. Don't add a
-  timestamp, the dashboard reads the file's real save time on its own. Keep it true: never
-  write a `current` or `total` that isn't accurate at that moment. It's a status board, not
-  a progress bar for show.
+## Progress
+Don't write status or progress files. Report back when you finish an item (message the
+teammate or lead in Claude Code, reply to the coordinator in Codex). The session that started
+the run keeps the live checklist.

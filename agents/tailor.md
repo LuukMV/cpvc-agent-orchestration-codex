@@ -60,7 +60,7 @@ For each GO listing the validator hands you:
 9. Write the full packet to `runs/packets/<company>-<role-slug>/packet.md`. The folder name
    is the company and job title in lowercase with hyphens, like
    `runs/packets/acme-corp-data-analyst-intern/`. Keep the first two lines exactly in the
-   format below, `runs/APPLICATIONS.md` and the dashboard read the company, job title,
+   format below, `runs/APPLICATIONS.md` reads the company, job title,
    location, pay and link from them:
 
 ```
@@ -85,7 +85,3 @@ touch lines that weren't flagged.
 
 If a form-filler run follows, this packet is what it reads from. Keep it complete enough
 to prefill a real form without re-deriving anything.
-
-Keep `runs/status/tailor.json` current as you go. RULES.md's "Status dashboard"
-section has the exact format. That file is what `dashboard.html` reads to show your
-progress live.
