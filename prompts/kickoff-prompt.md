@@ -29,7 +29,8 @@ subagents: one finder, then parallel validators on batches of listings, then one
 GO listing in parallel, then one fact_checker per packet in parallel. Give every agent its
 own output file and status file exactly as `AGENTS.md` describes. Don't run the form-filler
 step. When done, tell me how many listings you found, how many were GO, how many packets
-passed fact-check outright, and name any that failed.
+passed fact-check outright, and name any that failed. Run `node scripts/applications.js`
+first so `runs/APPLICATIONS.md` is current.
 
 ---
 

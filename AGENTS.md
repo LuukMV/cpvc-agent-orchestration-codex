@@ -66,8 +66,10 @@ fixes it by hand.
 
 ## Step 5: report
 
+Run `node scripts/applications.js`. It rebuilds `runs/APPLICATIONS.md`, one row per packet
+with the company, job title, fact-check result and links to its resume, packet and posting.
 Tell the user how many listings were found, how many were GO, how many packets passed
-fact-check outright, and name any that failed. Do not run the form-filler step
+fact-check outright, and name any that failed. Point them to `runs/APPLICATIONS.md`. Do not run the form-filler step
 automatically, see below.
 
 ## Fallback: one role at a time

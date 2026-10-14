@@ -131,7 +131,28 @@ In your fresh chat, send one message: your resume or LinkedIn text and the two e
 
 ## Step 5: read your packets
 
-Once it's done, open `runs/validated.md` to see every listing's verdict and why (SKIP always
+Everything the pipeline writes lands in `runs/`:
+
+```
+runs/
+  APPLICATIONS.md             start here: one row per job, with links to everything below
+  found.md                    every listing finder turned up
+  validated.md                GO or SKIP for each one, with the reason
+  packets/
+    acme-corp-data-analyst-intern/     one folder per job: company and job title
+      packet.md               bullets, cover letter, answers, fact-check verdict
+      resume.json             the resume's content, every line from PROFILE.md
+      resume.docx             the one-page tailored resume, ready for Word or Google Docs
+  status/                     what the dashboard reads
+```
+
+Open `runs/APPLICATIONS.md` first. It lists every job with its company, job title, location,
+pay, fact-check result and how many questions you still need to answer, plus links to its
+`resume.docx`, `packet.md` and the posting. Passing packets sort to the top. The dashboard
+shows the same table live while the pipeline runs. If the list ever looks out of date, ask
+your AI to run `node scripts/applications.js`.
+
+Then open `runs/validated.md` to see every listing's verdict and why (SKIP always
 comes with a real reason, never a silent drop), then open whatever landed in
 `runs/packets/`. Each packet has resume bullets, a cover letter, question answers, a tailored
 one-page `resume.docx` (Word, built from that packet's `resume.json`), and a `## Fact-check`

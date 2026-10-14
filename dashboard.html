@@ -52,6 +52,21 @@ h1 { font: 700 clamp(24px, 4vw, 34px)/1.15 var(--font-display); margin: 10px 0 4
 .item { margin-top: 4px; font: 600 11px var(--font-mono); color: var(--accent); overflow-wrap: anywhere; }
 .quiet { margin-top: 8px; font: 600 12px var(--font-mono); color: var(--warn); }
 .updated { margin-top: 22px; font: 12px var(--font-mono); color: var(--muted); text-align: center; }
+
+h2 { font: 700 18px var(--font-display); margin: 36px 0 4px; text-transform: uppercase; letter-spacing: .01em; }
+.apps-wrap { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; overflow-x: auto; }
+table.apps { width: 100%; border-collapse: collapse; font-size: 14px; }
+.apps th { text-align: left; font: 600 10.5px var(--font-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); padding: 12px 14px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.apps td { padding: 12px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.apps tr:last-child td { border-bottom: 0; }
+.apps .co { font-weight: 700; }
+.apps .meta { color: var(--muted); font-size: 12.5px; margin-top: 2px; }
+.apps a { color: var(--accent); font-weight: 600; text-decoration: none; margin-right: 12px; white-space: nowrap; }
+.apps a:hover { text-decoration: underline; }
+.pill.pass { background: var(--mint); color: var(--on-accent); }
+.pill.failed { background: var(--warn-soft); color: var(--warn); }
+.pill.pending { background: var(--line); color: var(--muted); }
+.apps-empty { padding: 18px; color: var(--muted); font-style: italic; }
 </style>
 </head>
 <body>
@@ -69,8 +84,16 @@ h1 { font: 700 clamp(24px, 4vw, 34px)/1.15 var(--font-display); margin: 10px 0 4
 
   <div class="grid" id="grid"></div>
   <p class="updated" id="updated"></p>
+
+  <h2>Applications</h2>
+  <p class="sub">Every packet in <code>runs/packets/</code>, one row per job. Only use a resume whose fact-check says PASS, and answer its open questions first.</p>
+  <div class="apps-wrap"><table class="apps">
+    <thead><tr><th>Company and job</th><th>Fact-check</th><th>Open questions</th><th>Files</th></tr></thead>
+    <tbody id="apps"><tr><td colspan="4" class="apps-empty">No packets yet. Each one shows up here as soon as the tailor writes it.</td></tr></tbody>
+  </table></div>
 </div>
 
+<script src="scripts/applications.js"></script>
 <script>
 (function () {
   var STAGES = ["intake", "finder", "validator", "tailor", "fact-checker", "scout"];
@@ -174,8 +197,88 @@ h1 { font: 700 clamp(24px, 4vw, 34px)/1.15 var(--font-display); margin: 10px 0 4
     });
   }
 
+  // ---- Applications table, built live from runs/packets/ with the same parser as
+  // scripts/applications.js ----
+  var appsBody = document.getElementById("apps");
+  var lastApps = "";
+
+  function listDirs(url) {
+    return fetch(url, { cache: "no-store" }).then(function (r) {
+      if (!r.ok) return [];
+      return r.text().then(function (html) {
+        var dirs = [], re = /href="([^"\/?#]+)\/"/g, m;
+        while ((m = re.exec(html))) dirs.push(decodeURIComponent(m[1]));
+        return dirs;
+      });
+    }, function () { return []; });
+  }
+
+  function loadApp(slug) {
+    var base = "runs/packets/" + encodeURIComponent(slug) + "/";
+    return Promise.all([
+      fetch(base + "packet.md", { cache: "no-store" }).then(function (r) { return r.ok ? r.text() : null; }),
+      fetch(base + "resume.docx", { method: "HEAD", cache: "no-store" }).then(function (r) { return r.ok; }),
+    ]).then(function (res) {
+      if (res[0] === null) return null;
+      var app = window.CPVCApplications.parsePacket(res[0]);
+      app.base = base; app.slug = slug; app.resume = res[1];
+      return app;
+    }, function () { return null; });
+  }
+
+  function link(text, href, download) {
+    var a = document.createElement("a");
+    a.textContent = text; a.href = href;
+    if (download) a.setAttribute("download", "");
+    else { a.target = "_blank"; a.rel = "noopener noreferrer"; }
+    return a;
+  }
+
+  function renderApps(apps) {
+    var sig = JSON.stringify(apps);
+    if (sig === lastApps) return;
+    lastApps = sig;
+    appsBody.textContent = "";
+    if (!apps.length) {
+      appsBody.innerHTML = '<tr><td colspan="4" class="apps-empty">No packets yet. Each one shows up here as soon as the tailor writes it.</td></tr>';
+      return;
+    }
+    apps.forEach(function (a) {
+      var tr = document.createElement("tr");
+      var td1 = document.createElement("td");
+      var co = document.createElement("div"); co.className = "co";
+      co.textContent = (a.company ? a.company + ": " : "") + (a.title || a.slug);
+      var meta = document.createElement("div"); meta.className = "meta";
+      meta.textContent = [a.location, a.pay].filter(Boolean).join(" · ");
+      td1.appendChild(co); td1.appendChild(meta);
+      var td2 = document.createElement("td");
+      var pill = document.createElement("span");
+      pill.className = "pill " + a.factCheck.toLowerCase();
+      pill.textContent = a.factCheck === "pending" ? "not checked yet" : a.factCheck;
+      td2.appendChild(pill);
+      var td3 = document.createElement("td"); td3.textContent = a.questions;
+      var td4 = document.createElement("td");
+      if (a.resume) td4.appendChild(link("resume.docx", a.base + "resume.docx", true));
+      td4.appendChild(link("packet", a.base + "packet.md"));
+      if (a.url) td4.appendChild(link("posting", a.url));
+      [td1, td2, td3, td4].forEach(function (td) { tr.appendChild(td); });
+      appsBody.appendChild(tr);
+    });
+  }
+
+  function pollApps() {
+    if (!window.CPVCApplications) return;
+    listDirs("runs/packets/").then(function (slugs) {
+      return Promise.all(slugs.map(loadApp));
+    }).then(function (apps) {
+      renderApps(window.CPVCApplications.sortApps(apps.filter(Boolean)));
+    });
+  }
+
   poll();
   setInterval(poll, 2000);
+  pollApps();
+  setInterval(pollApps, 5000);
 })();
 </script>
 </body>

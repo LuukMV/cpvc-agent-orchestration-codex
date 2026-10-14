@@ -57,7 +57,11 @@ For each GO listing the validator hands you:
    bullet or shorten the summary and build again, until it says "Fits on one page." Never
    shrink the font or margins to make it fit. If Node isn't installed, keep `resume.json`
    and say plainly that the .docx couldn't be built.
-9. Write the full packet to `runs/packets/<company>-<role-slug>/packet.md`:
+9. Write the full packet to `runs/packets/<company>-<role-slug>/packet.md`. The folder name
+   is the company and job title in lowercase with hyphens, like
+   `runs/packets/acme-corp-data-analyst-intern/`. Keep the first two lines exactly in the
+   format below, `runs/APPLICATIONS.md` and the dashboard read the company, job title,
+   location, pay and link from them:
 
 ```
 # <Company>: <Role>
@@ -71,6 +75,8 @@ For each GO listing the validator hands you:
 ## Application question answers
 ## Questions for you
 ```
+
+Then run `node scripts/applications.js` to add the packet to `runs/APPLICATIONS.md`.
 
 **Revising a packet that FAILED fact-check:** fix only the lines the fact-checker flagged,
 using its Fix suggestion for each. Delete the old `## Fact-check` section (so the packet gets
