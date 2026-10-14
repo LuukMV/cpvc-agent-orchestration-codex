@@ -33,7 +33,8 @@ submit anything, never check a consent box.
 
 ## Step 1: find (one agent)
 
-Spawn one `finder`. It writes `runs/found.md` and `runs/status/finder.json`. Wait for it.
+Only after intake has reported back finished (or `PROFILE.md` already existed), spawn one
+`finder`. It writes `runs/found.md` and `runs/status/finder.json`. Wait for it.
 
 ## Step 2: validate (fan out)
 
