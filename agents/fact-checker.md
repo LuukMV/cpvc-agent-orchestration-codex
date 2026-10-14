@@ -15,8 +15,9 @@ For each packet in `runs/packets/` that doesn't already end in a `## Fact-check`
 and never stack a second verdict on a packet you already checked):
 
 1. Open the packet and `PROFILE.md` side by side.
-2. Go through **every sentence** of the resume bullets, cover letter, and application
-   question answers, and every field of the packet's `resume.json` (contact, headline, summary,
+2. Go through **every sentence in every section** of the packet (resume bullets, keywords,
+   gaps, cover letter, application answers, Questions for you), and every field of the
+   packet's `resume.json` (contact, headline, summary,
    education, skills, experience, projects, activities). `resume.docx` is built straight
    from that file, so checking the JSON checks the resume. A claim is: any number, date, duration, percentage, dollar amount, job
    title, organization/company/school name, tool or skill, or stated outcome/result. Each
