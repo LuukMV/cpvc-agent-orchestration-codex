@@ -49,8 +49,11 @@ For each GO listing the validator hands you:
    (a missing phone means no phone in `contact`, no projects means no `projects` key). Run the
    step 7 self-check on it too. Then build the Word file:
    `node resume-builder/build.js runs/packets/<company>-<role-slug>/resume.json`
-   That writes `resume.docx` in the same folder. If it says the resume may run past one page,
-   cut the least relevant bullets and build again. If Node isn't installed, keep `resume.json`
+   That writes `resume.docx` in the same folder and checks the real page count (with
+   LibreOffice if it's installed, otherwise by laying out every line with Calibri's exact
+   character widths). If it says the resume runs past one page, cut the least relevant
+   bullet or shorten the summary and build again, until it says "Fits on one page." Never
+   shrink the font or margins to make it fit. If Node isn't installed, keep `resume.json`
    and say plainly that the .docx couldn't be built.
 9. Write the full packet to `runs/packets/<company>-<role-slug>/packet.md`:
 

@@ -5,6 +5,7 @@
   "description": "Renders a resume.json into a one-page, ATS-friendly resume.docx",
   "main": "build.js",
   "dependencies": {
-    "docx": "9.11.0"
+    "docx": "9.11.0",
+    "fontkit": "^2.0.4"
   }
 }

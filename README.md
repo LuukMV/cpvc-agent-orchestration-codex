@@ -52,6 +52,8 @@ its own, whenever you ask for it.
 - A current Codex release (CLI, IDE extension or desktop app). Subagents are on by default.
 - Git
 - Node.js 18 or newer (for building the Word resumes)
+- Optional: LibreOffice, so the resume builder can render each resume and count its real pages.
+  Without it, the builder measures the layout using Calibri's exact character widths instead.
 - For the form-filler step only: whatever browser-control tooling your Codex setup has, if
   any
 
