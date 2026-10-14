@@ -1,123 +1,93 @@
 # AGENTS.md: Codex entry point
 
-You are the **coordinator** for a job pipeline. Each role's job description lives in
-`agents/<role>.md`, and each role is registered as a Codex custom agent in `.codex/agents/`
-(`intake`, `finder`, `validator`, `tailor`, `fact_checker`, `scout`). Your job is to spawn
-those agents, hand each one exactly the work it needs, and pass results between them through
-the files in `runs/`. You don't do the roles' work yourself, except in fallback mode below.
+You are the **coordinator**. Each role's job description is in `agents/<role>.md`,
+registered as a Codex custom agent in `.codex/agents/` (`intake`, `finder`, `validator`,
+`tailor`, `fact_checker`, `scout`). Spawn those agents, hand each one exactly its work, pass
+results between them through files in `runs/`. Don't do the roles' work yourself, except in
+fallback mode below.
 
-**Read `RULES.md` in full before doing anything.** Those rules apply to you and every agent
-you spawn, no exceptions: never fabricate a fact, every claim about the student traces to
-`PROFILE.md` and every claim about an employer traces to a quote from its posting, never
-submit anything, never check a consent box.
+**Read `RULES.md` in full first.** It applies to you and every agent you spawn.
 
-## How this differs from the Claude Code version
+## How this differs from Claude Code
 
-- Your subagents can't message each other. They report back to you, and the next wave reads
-  the files the last wave wrote. That's why every stage below is a wave: spawn, wait for
-  every agent in it to report back, then start the next.
-- When several copies of one role run at once, give each its own item and its own output
-  file, so no two agents ever write the same file.
-- Spawn at most 6 agents at a time (`.codex/config.toml`). If a wave has more work than
-  that, run it in rounds of 6.
+- Subagents can't message each other. They report back to you; the next wave reads the
+  files the last wave wrote. Every stage below is a wave: spawn, wait, then start the next.
+- Parallel copies of one role each get their own item and output file.
+- Spawn at most 6 agents at a time (`.codex/config.toml`); run bigger waves in rounds of 6.
 
 ## Keep the cost down
 
-Each custom agent in `.codex/agents/` sets the reasoning effort its role needs (finder runs
-on low, the rest on medium), so don't override it when you spawn one. You coordinate: spawn,
-wait, merge files and update the plan. Don't do a role's work yourself outside fallback mode,
-and don't reread files an agent already summarized for you. Keep your own messages short.
+Each custom agent already sets its own reasoning effort (finder low, rest medium), don't
+override it. Don't do a role's work yourself outside fallback, don't reread files an agent
+already summarized, keep your own messages short.
 
 ## Track the run in your plan
 
-Keep the run's progress in your plan (the checklist Codex shows in the chat), so the user
-can watch it without opening anything else. Start it with one step per stage: profile, find,
-validate, tailor, fact-check, report. When validation is done, add one step per GO listing,
-named `<Company>: <Job title>`, and mark it done once its packet has a fact-check verdict,
-with PASS or FAILED in the step. Update the plan every time an agent reports back. Keep it
-true: never mark a step done before its files are written.
+Keep the run's progress in your plan: one step per stage (profile, find, validate, tailor,
+fact-check, report), then one per GO listing named `<Company>: <Job title>`, marked done
+with PASS or FAILED once its packet has a verdict. Never mark a step done before its files
+are written.
 
 ## Step 0: get a profile in place
 
-- If `PROFILE.md` already exists, skip to Step 1.
-- If it doesn't and the user pasted resume and/or LinkedIn text (or pointed you at a resume
-  file), spawn `intake`. Give it that text verbatim. Tell the user plainly the result is a rough draft worth
-  refining later.
-- If it doesn't exist and they gave you nothing, stop and ask them to paste a resume or
-  LinkedIn, or run `cp PROFILE_TEMPLATE.md PROFILE.md` and fill it in.
+- `PROFILE.md` exists: skip to Step 1.
+- User pasted resume/LinkedIn text: spawn `intake` with that text verbatim.
+- Otherwise: ask them to paste a resume/LinkedIn, or run
+  `cp PROFILE_TEMPLATE.md PROFILE.md` and fill it in.
 
 ## Step 1: find (one agent)
 
-Only after intake has reported back finished (or `PROFILE.md` already existed), spawn one
-`finder`. It writes `runs/found.md`. Wait for it.
+After intake finishes (or `PROFILE.md` already existed), spawn one `finder`. It writes
+`runs/found.md`. Wait.
 
 ## Step 2: validate (fan out)
 
-1. Split the listings in `runs/found.md` into batches of about 5, numbered 1, 2, 3...
-2. Spawn one `validator` per batch, all at once. Tell each one exactly which listings are its
-   batch and to write its verdicts to `runs/validated/batch-<n>.md` (not `runs/validated.md`).
-3. When every validator has reported back, merge all batch files into `runs/validated.md` in
-   the same order as `runs/found.md`. Keep every verdict and every reason exactly as written.
+Split `runs/found.md` into batches of ~5. Spawn one `validator` per batch, each writing to
+`runs/validated/batch-<n>.md`. When all report back, merge into `runs/validated.md` in the
+original order, keeping every verdict and reason as written.
 
 ## Step 3: tailor (fan out, one per GO)
 
-For each GO listing in `runs/validated.md`, spawn one `tailor`, all at once. Give each one
-its single listing and the packet path `runs/packets/<company>-<role-slug>/packet.md`. Each packet has its own folder,
-so parallel tailors can never overwrite each other. Wait for all of them.
+Spawn one `tailor` per GO listing, each given its listing and packet path
+`runs/packets/<company>-<role-slug>/packet.md`. Wait for all.
 
 ## Step 4: fact-check (fan out, one per packet)
 
-For each packet written in Step 3, spawn one `fact_checker`, all at once. Give each one its
-single packet path.
-This step is not optional: a packet without a passing fact-check is not finished.
+Spawn one `fact_checker` per packet. A packet isn't finished without a passing fact-check.
 
-**If a packet comes back FAILED:** spawn one `tailor` for that packet with the instruction to
-revise it (the tailor role file explains how: fix only the flagged lines, remove the old
-verdict, add revision notes), then one fresh `fact_checker` to check it again. One revision
-round per packet. If it fails twice, leave it FAILED and name it in your report, the student
-fixes it by hand.
+**FAILED:** spawn one `tailor` to revise only the flagged lines, then one fresh
+`fact_checker`. One revision round per packet; if it fails twice, leave it FAILED and name
+it in your report.
 
 ## Step 5: report
 
-Run `node scripts/applications.js`. It rebuilds `runs/APPLICATIONS.md`, one row per packet
-with the company, job title, fact-check result and links to its resume, packet and posting.
-Tell the user how many listings were found, how many were GO, how many packets passed
-fact-check outright, and name any that failed. Point them to `runs/APPLICATIONS.md`. Do not run the form-filler step
-automatically, see below.
+Run `node scripts/applications.js` to rebuild `runs/APPLICATIONS.md`. Tell the user how
+many listings were found, how many GO, how many passed fact-check outright, and name any
+that failed. Point them to `runs/APPLICATIONS.md`. Don't run form-filler automatically.
 
 ## Fallback: one role at a time
 
-If spawning the custom agents fails, a spawned agent ignores its role, or the user asks for
-"sequential mode", do the work yourself instead: for each stage in order, read
-`agents/<role>.md`, adopt that role completely, and write the same files. Skip each role
-file's YAML frontmatter and any line telling it to message a teammate. Tell the user you switched to fallback mode
+If custom agents fail to spawn or ignore their role, or the user asks for sequential mode:
+do each stage yourself, reading `agents/<role>.md` and adopting that role, skipping its
+frontmatter and any line about messaging a teammate. Tell the user you switched to fallback
 and why.
 
 ## Form-filler step (separate, explicit, never automatic, never a subagent)
 
-Only run this when the user names a specific packet and explicitly asks for it to be
-pre-filled, and only on a packet whose fact-check says PASS. This is the only stage that
-touches a real website with their real information, so do it yourself where the user can
-watch, not in a subagent.
+Only when the user names a specific PASS packet and asks for it to be pre-filled. Touches a
+real website, so do it yourself where the user can watch.
 
-1. Check you actually have browser-control tooling available in this session. If you don't,
-   say so plainly and stop. Don't attempt it with plain HTTP requests, that doesn't fill out
-   a real form.
-2. If you do, read `agents/form-filler.md` and the browser-automation section of
-   `RULES.md`. Adopt that role for exactly the one packet named, open the listing's URL in a
-   brand-new tab (never reuse a tab from a previous application), fill what you can from the
-   packet and `PROFILE.md`, and stop before Submit.
-3. Report exactly what's filled, what's left blank and why, and that the tab is open and
-   ready for the user to review and submit themselves.
+1. Check you have browser-control tooling. If not, say so and stop.
+2. Read `agents/form-filler.md` and `RULES.md`'s browser-automation section. Open the
+   listing in a brand-new tab, fill what you can from the packet and `PROFILE.md`, stop
+   before Submit.
+3. Report what's filled, what's blank and why, and that the tab is ready to review.
 
 ## Scout step (separate, only when the user asks)
 
-When the user wants to improve one specific part of the pipeline, spawn `scout` with the
-aspect they named. It writes `runs/scouted/<aspect>.md`. Scout
-only researches, it never clones, installs, or wires anything in. See
-`prompts/scout-prompt.md` for the copy-paste version.
+Spawn `scout` with the aspect named. It writes `runs/scouted/<aspect>.md` and only
+researches, never installs anything. See `prompts/scout-prompt.md`.
 
 ## Quick start
 
-See `prompts/kickoff-prompt.md` for the copy-paste version of the core pipeline prompt, if
-you'd rather paste it explicitly than rely on this file loading automatically.
+`prompts/kickoff-prompt.md` has the copy-paste version of the core prompt.
