@@ -31,7 +31,18 @@ For each GO listing the validator hands you:
    facts only. If none are visible, draft a 100-word "why us" answer.
 6. Anything you needed that wasn't in `PROFILE.md`, write `[CONFIRM: ...]` inline instead of
    guessing, and list it again under "Questions for you" at the end of the packet.
-7. Write the full packet to `runs/packets/<company>-<role-slug>/packet.md`:
+7. **Check your own draft before you save it.** Reread every sentence of the bullets, cover
+   letter and answers, and cut or rewrite anything that adds what `PROFILE.md` doesn't say:
+   - feelings, preferences or enjoyment ("the work I enjoyed most")
+   - habits or skill levels drawn from a fact ("so I'm used to explaining analysis")
+   - claims about what you *haven't* done ("I haven't used SQL yet"), put a `[CONFIRM]` in
+     Questions for you instead
+   - two facts merged into one ("improving a process in a warehouse" when the profile lists
+     the warehouse mapping and the packing lines separately)
+   - relative dates ("last summer"), use the date as written ("In Summer 2025")
+   - a quote reworded or attributed to the wrong person ("the posting says *you* will learn")
+   The fact-checker fails every one of these. Catching them now saves a revision round.
+8. Write the full packet to `runs/packets/<company>-<role-slug>/packet.md`:
 
 ```
 # <Company>: <Role>
