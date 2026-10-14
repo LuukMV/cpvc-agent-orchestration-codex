@@ -1,0 +1,33 @@
+{
+  "name": "{{Full name}}",
+  "contact": ["{{City, State}}", "{{Email}}", "{{Phone}}", "{{LinkedIn URL}}", "{{Work authorization, only if PROFILE.md states it}}"],
+  "headline": "{{Field or degree}} | {{2-3 focus areas that match this posting}}",
+  "summary": "{{2-3 sentences built only from PROFILE.md facts, pointed at this posting}}",
+  "education": [
+    {
+      "school": "{{School}}",
+      "date": "{{Expected graduation}}",
+      "degree": "{{Degree and major}}",
+      "details": ["GPA: {{GPA, only if PROFILE.md lists it}}", "Coursework: {{2-4 classes, most relevant first}}"]
+    }
+  ],
+  "skills": [
+    {"label": "{{Category}}", "items": ["{{skill from PROFILE.md}}", "{{skill}}"]}
+  ],
+  "experience": [
+    {
+      "title": "{{Job title}}",
+      "org": "{{Organization}}",
+      "location": "{{City, State, only if PROFILE.md lists it}}",
+      "date": "{{Start}} - {{End}}",
+      "bullets": ["{{What you did and the real result, numbers exactly as in PROFILE.md}}"]
+    }
+  ],
+  "projects": [
+    {"title": "{{Project name}}", "date": "{{Dates}}", "bullets": ["{{What you built or analyzed and the real result}}"]}
+  ],
+  "activities": [
+    {"title": "{{Role}}", "org": "{{Organization}}", "date": "{{Start}} - {{End}}", "bullets": ["{{What you did}}"]}
+  ],
+  "additionalActivities": ["{{short item from PROFILE.md}}"]
+}

@@ -1,7 +1,7 @@
 ---
 name: tailor
 description: Drafts a tailored resume bullet set and cover letter for each GO listing, using only facts from the student's PROFILE.md. Use after validator marks a listing GO.
-tools: WebFetch, Read, Write
+tools: WebFetch, Read, Write, Bash
 model: sonnet
 ---
 
@@ -42,18 +42,22 @@ For each GO listing the validator hands you:
    - relative dates ("last summer"), use the date as written ("In Summer 2025")
    - a quote reworded or attributed to the wrong person ("the posting says *you* will learn")
    The fact-checker fails every one of these. Catching them now saves a revision round.
-8. **Fill in the resume.** Copy `RESUME_TEMPLATE.html` to
-   `runs/packets/<company>-<role-slug>/resume.html` and replace every `{{...}}` placeholder,
-   following the rules in the comment at the top of the template. Use the same tailored
-   bullets as the packet, order experience and skills so the parts that match this posting
-   come first, and delete any section or line `PROFILE.md` has nothing for. No placeholder
-   may be left in the file. Run the same self-check from step 7 on it.
+8. **Build the resume.** Copy `resume-builder/resume.template.json` to
+   `runs/packets/<company>-<role-slug>/resume.json` and replace every `{{...}}` with facts from
+   `PROFILE.md`. Use this listing's tailored bullets, put the experience and skills that match
+   the posting first, and delete any field, entry or section `PROFILE.md` has nothing for
+   (a missing phone means no phone in `contact`, no projects means no `projects` key). Run the
+   step 7 self-check on it too. Then build the Word file:
+   `node resume-builder/build.js runs/packets/<company>-<role-slug>/resume.json`
+   That writes `resume.docx` in the same folder. If it says the resume may run past one page,
+   cut the least relevant bullets and build again. If Node isn't installed, keep `resume.json`
+   and say plainly that the .docx couldn't be built.
 9. Write the full packet to `runs/packets/<company>-<role-slug>/packet.md`:
 
 ```
 # <Company>: <Role>
 **Listing:** <URL> · **Location:** ... · **Pay:** ... · **Validator verdict:** GO
-**Resume:** resume.html (open it in a browser and save as PDF)
+**Resume:** resume.docx (built from resume.json)
 
 ## From the posting
 - "<exact sentence copied from the posting>"   (every company/role claim below cites one of these)
