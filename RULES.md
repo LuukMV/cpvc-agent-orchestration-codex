@@ -51,8 +51,7 @@ Nothing else in this pipeline gets that leniency.
 
 ## Writing voice
 Plain, specific, first person. No corporate buzzwords ("synergy," "leverage," "passionate
-about"). No em dashes. Cover letters open "Hi [Company] team," and sign "Best," then your
-name. Under 250 words.
+about"). Cover letters stay under 250 words.
 
 ## Ghost-listing signals (validator uses these; see `agents/validator.md` for the
 full checklist)
