@@ -79,6 +79,8 @@ You won't need a terminal for any of this, your AI runs every command.
    Say yes when Codex asks whether to trust the folder. Codex reads `AGENTS.md`, the custom
    agents in `.codex/agents/` and the live web search setting only when a chat starts in a
    trusted folder.
+   Then type `/model` and pick a **medium** reasoning effort for that chat. It only
+   coordinates, so it doesn't need high effort, and the subagents set their own.
 
 ## Step 2: get a profile in place (two ways)
 
