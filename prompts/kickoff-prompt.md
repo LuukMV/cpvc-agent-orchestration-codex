@@ -7,10 +7,15 @@ Two ways to get started, pick one:
   running the rest of the pipeline.
 - **Thorough path**: `cp PROFILE_TEMPLATE.md PROFILE.md` and fill it in yourself first.
 
-Whichever path you pick, add one line about work authorization, for example
-`Work authorization: U.S. citizen, no sponsorship needed` (write whatever is true for you).
-Resumes almost never say it, and most postings ask, so without it nearly every packet
-comes back with a `[CONFIRM]` question about it.
+Whichever path you pick, add these two lines (write whatever is true for you):
+
+```
+Work authorization: U.S. citizen, no sponsorship needed
+Currently enrolled: yes
+```
+
+Resumes almost never say either one and most postings ask, so without them nearly every
+packet comes back with `[CONFIRM]` questions about them.
 
 Before you paste: when Codex asks whether to trust this folder, say yes. Codex only loads
 the custom agents in `.codex/agents/` and the live web search setting in

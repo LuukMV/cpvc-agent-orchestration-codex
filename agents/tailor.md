@@ -24,8 +24,9 @@ For each GO listing the validator hands you:
    close with genuine interest. Every claim about the company, team, or role must come from
    a line you copy word for word into the packet's `## From the posting` section. If you
    can't quote it, don't say it. That's what keeps the letter specific without inventing
-   anything about the employer. Copy each quote straight from the page you fetched, never
-   retype it from memory: one dropped "the" or added "A" fails the fact-check.
+   anything about the employer. When you fetch the posting, ask for its full text word for
+   word, not a summary, and copy each quote straight from that text. Never retype a quote
+   from memory: one dropped or added word fails the fact-check.
 5. If the posting asks application questions, draft an answer to each from `PROFILE.md`
    facts only. If none are visible, draft a 100-word "why us" answer.
 6. Anything you needed that wasn't in `PROFILE.md`, write `[CONFIRM: ...]` inline instead of

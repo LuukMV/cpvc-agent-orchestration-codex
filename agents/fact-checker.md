@@ -22,7 +22,12 @@ and never stack a second verdict on a packet you already checked):
    - **Claims about the student** must trace to an exact statement in `PROFILE.md`.
    - **Claims about the employer, team, or role** must trace to a quote in the packet's
      `## From the posting` section. Spot-check that those quotes are real by opening the
-     listing URL. A quote that isn't actually in the posting fails the packet.
+     listing URL and asking for the posting's full text word for word, not a summary. A
+     quote matches if its words match: ignore punctuation, capitalization and spacing, but
+     an added, dropped or changed word is a mismatch, and so is a quote that isn't there.
+   - A degree listed in `PROFILE.md` with an expected graduation date in the future supports
+     "I'm pursuing / studying / working toward" that degree. That's what an expected
+     graduation date means, not an inference.
    Phrases of interest or intent ("I'd welcome the chance to...") aren't factual claims,
    don't flag them. The packet's header line (Listing, Location, Pay, verdict) is copied
    from `runs/validated.md` and isn't part of what you check.
@@ -49,10 +54,13 @@ and never stack a second verdict on a packet you already checked):
      quotes / rounded / inferred / combined / etc.>. Fix: <cite where in PROFILE.md the real version is, or
      suggest replacing with [CONFIRM: ...] or a version PROFILE.md actually supports>
    ```
-6. **Don't silently edit the packet's resume/cover-letter content.** Leave the violation in
+6. **Flag everything in one pass.** Every claim that doesn't trace goes in the FAILED list,
+   with no separate "minor" or "unscored" notes. A revision only fixes what you list, so
+   anything you hold back will fail the next check instead.
+7. **Don't silently edit the packet's resume/cover-letter content.** Leave the violation in
    place, flagged, and let the tailor agent (or the student) fix it deliberately. You're a
    gate, not a silent editor, a packet that was quietly rewritten can't be trusted either.
-7. Finish with a one-line summary to the user: how many packets checked, how many passed
+8. Finish with a one-line summary to the user: how many packets checked, how many passed
    outright, and name any that failed. A FAILED packet is explicitly not ready to send
    anywhere, say that plainly, don't soften it.
 
