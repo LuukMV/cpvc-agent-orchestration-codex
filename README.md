@@ -45,6 +45,9 @@ validators in parallel, then one tailor per GO listing, then one fact-checker pe
    If git says the folder isn't empty and the only thing in it is a hidden .DS_Store file,
    delete just that file and try again. If anything else is in the folder, stop and ask me.
    If git or Node.js isn't installed, stop and tell me how to install it on my computer.
+   If step 2 says npm isn't recognized even though Node.js is installed, you're on Windows
+   and npm needs its .cmd extension in this shell: retry with
+   "npm.cmd install --prefix resume-builder" instead.
    When both steps work, tell me it's ready.
    ```
 
@@ -99,6 +102,9 @@ Only for a packet that passed fact-check and that you've read and want to apply 
   the bottom of `prompts/kickoff-prompt.md`.
 - **Form-filler has no browser tooling:** apply manually from the packet instead.
 - **Packet keeps failing:** `PROFILE.md` is too thin, fill in more and rerun.
+- **"npm isn't recognized" on Windows, even with Node.js installed:** some Windows shells
+  only resolve `npm.cmd`, not plain `npm`. Open PowerShell, `cd` into the folder, and run
+  `npm.cmd install --prefix resume-builder` directly.
 
 ## Going further
 
