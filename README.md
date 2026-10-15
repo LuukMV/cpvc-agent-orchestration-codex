@@ -8,7 +8,7 @@ finds real job listings, checks them for ghost postings, tailors a resume and co
 to each one, fact-checks every claim, and (optionally) pre-fills the real application form,
 stopping before Submit.
 
-Using Claude Code? Use the [Claude Code version](https://github.com/LuukMV/cpvc-agent-orchestration-claude) instead.
+Using Claude Code? Use the [Claude Code version](https://github.com/calpolyvibecoding-01/cpvc-agent-orchestration-claude) instead.
 
 ## Roles
 
@@ -40,7 +40,7 @@ validators in parallel, then one tailor per GO listing, then one fact-checker pe
 
    ```
    Set this folder up for the CPVC job pipeline. Run these here, in this empty folder:
-   1. git clone https://github.com/LuukMV/cpvc-agent-orchestration-codex.git .
+   1. git clone https://github.com/calpolyvibecoding-01/cpvc-agent-orchestration-codex.git .
    2. npm install --prefix resume-builder
    If git says the folder isn't empty and the only thing in it is a hidden .DS_Store file,
    delete just that file and try again. If anything else is in the folder, stop and ask me.
@@ -110,4 +110,4 @@ Only for a packet that passed fact-check and that you've read and want to apply 
 
 - `prompts/scout-prompt.md`: point scout at one part of the pipeline you want to improve.
 - Rerun `finder` with a different target role in `PROFILE.md`.
-- Try the [Claude Code version](https://github.com/LuukMV/cpvc-agent-orchestration-claude).
+- Try the [Claude Code version](https://github.com/calpolyvibecoding-01/cpvc-agent-orchestration-claude).
