@@ -37,8 +37,10 @@ are written.
 
 ## Step 1: find (one agent)
 
-After intake finishes (or `PROFILE.md` already existed), spawn one `finder`. It writes
-`runs/found.md`. Wait.
+Before spawning finder, ask the user how many listings to look for (a number like 5 or 10,
+not 15-20), since everything downstream scales with it. Wait for their answer. After intake
+finishes (or `PROFILE.md` already existed), spawn one `finder`, telling it exactly that
+number instead of its usual default. It writes `runs/found.md`. Wait.
 
 ## Step 2: validate (fan out)
 

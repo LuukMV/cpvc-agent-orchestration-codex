@@ -20,12 +20,13 @@ Before you paste: say yes when Codex asks to trust this folder. It only loads
 ---
 
 Follow `AGENTS.md` as the coordinator. Read `RULES.md` first. Handle Step 0 (spawn intake
-on the resume/LinkedIn text above, or confirm `PROFILE.md` exists), then run the pipeline:
-one finder, then parallel validators on batches of listings, then one tailor per GO listing
-in parallel, then one fact_checker per packet in parallel. Give every agent its own output
-file exactly as `AGENTS.md` describes, and keep your plan current as the run moves. Don't
-run the form-filler step. When done, run `node scripts/applications.js`, then tell me how
-many listings you found, how many were GO, how many packets passed fact-check outright, and
+on the resume/LinkedIn text above, or confirm `PROFILE.md` exists), ask me how many
+listings to look for per Step 1, then run the pipeline: one finder, then parallel
+validators on batches of listings, then one tailor per GO listing in parallel, then one
+fact_checker per packet in parallel. Give every agent its own output file exactly as
+`AGENTS.md` describes, and keep your plan current as the run moves. Don't run the
+form-filler step. When done, run `node scripts/applications.js`, then tell me how many
+listings you found, how many were GO, how many packets passed fact-check outright, and
 name any that failed.
 
 ---

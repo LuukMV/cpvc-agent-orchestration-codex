@@ -18,8 +18,10 @@ listings, not to judge or tailor anything.
    you capture the real title, location, pay (if listed), and a direct application URL.
 4. Write every candidate to `runs/found.md` as a markdown list, one entry per listing:
    `- [Title] at [Company], [Location], [Pay or "not listed"], [URL], found: [today's date]`
-5. Stop at roughly 15-20 solid candidates for a first pass, or whenever you've covered the
-   search angles reasonably well. Don't try to be exhaustive on the first run.
+5. Stop once you reach the number of candidates you were given (whoever spawned you should
+   have said one; if they didn't, ask rather than guess, and default to 10 only if there's
+   no one to ask), or whenever you've covered the search angles reasonably well. Don't try
+   to be exhaustive.
 6. Finish by messaging the validator teammate with a one-line count and the file path.
 
 Don't screen for ghost listings yourself, that's the validator's job. Just don't include

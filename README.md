@@ -74,7 +74,9 @@ about you. Skim `RULES.md` too, it's short.
 ## Step 3: run the kickoff prompt
 
 Send one message: your resume/LinkedIn text and the two extra lines (fast path only), then
-the prompt block from `prompts/kickoff-prompt.md`. Type `/agent` to watch any agent work.
+the prompt block from `prompts/kickoff-prompt.md`. The coordinator will ask how many
+listings to look for before spawning finder, answer with a small number (5-10) for a
+faster run. Type `/agent` to watch any agent work.
 
 ## Step 4: read your packets
 
